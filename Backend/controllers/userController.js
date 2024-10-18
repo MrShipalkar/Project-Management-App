@@ -81,12 +81,23 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// Update user information (name or password)
+// Update user information (either name, email, or password, one at a time)
 exports.updateUser = async (req, res) => {
-  const { name, oldPassword, newPassword } = req.body;
+  const { name, email, oldPassword, newPassword } = req.body;
   const userId = req.user.id;  // Assumes req.user.id is available from the JWT middleware
 
   try {
+    // Count how many fields the user is trying to update
+    let updateCount = 0;
+    if (name) updateCount++;
+    if (email) updateCount++;
+    if (oldPassword && newPassword) updateCount++;
+
+    // If more than one field is being updated, return an error
+    if (updateCount > 1) {
+      return res.status(400).json({ message: 'You can update only one field at a time' });
+    }
+
     // Find the user by ID
     const user = await User.findById(userId);
 
@@ -99,7 +110,17 @@ exports.updateUser = async (req, res) => {
       user.name = name;
     }
 
-    // Update password if old and new passwords are provided
+    // Update email if provided
+    if (email) {
+      // Check if the email is already in use by another user
+      const emailExists = await User.findOne({ email });
+      if (emailExists && emailExists._id.toString() !== userId) {
+        return res.status(400).json({ message: 'Email is already in use by another user' });
+      }
+      user.email = email;
+    }
+
+    // Update password if both old and new passwords are provided
     if (oldPassword && newPassword) {
       // Check if the old password matches the one in the database
       const isMatch = await bcrypt.compare(oldPassword, user.password);
@@ -120,8 +141,8 @@ exports.updateUser = async (req, res) => {
       return res.status(200).json({ message: 'Password updated successfully. Please log in again.' });
     }
 
-    // Return success message if only name was updated
-    res.status(200).json({ message: 'User updated successfully', user: { name: user.name } });
+    // Return success message if name or email was updated
+    res.status(200).json({ message: 'User updated successfully', user: { name: user.name, email: user.email } });
   } catch (error) {
     console.error('Error updating user:', error);
     res.status(500).json({ message: 'Server error' });
