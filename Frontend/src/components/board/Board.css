@@ -1,0 +1,171 @@
+.board-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  width: auto;
+  /* Take up full viewport width */
+  overflow-x: auto;
+  /* Allow horizontal scrolling */
+  white-space: nowrap;
+  /* Prevent columns from wrapping */
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 20px; */
+}
+
+.board-header h2 {
+  /* font-family: Poppins */
+  font-size: 25px;
+  font-weight: 600;
+  line-height: 33px;
+  text-align: left;
+  color: #000000;
+}
+
+.board-header p {
+  font-size: 14px;
+  color: #828282;
+}
+
+.board-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-bottom: 20px; */
+}
+
+.board-title-name {
+  display: flex;
+}
+
+.board-title h3 {
+  /* font-family: Poppins; */
+  font-size: 29px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.add-people-btn {
+  width: 102px;
+  background-color: transparent;
+  border: none;
+  color: #707070;
+  font-size: 17px;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 40px;
+}
+
+
+.board-columns {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+  overflow-x: auto;
+}
+
+.board-column {
+  /* margin: 10px; */
+  background-color: #f1f3f5;
+  padding-left: 10px;
+  border-radius: 8px;
+  min-height: 70vh;
+  min-width: 23%;
+  /* Each column is 1/3rd of the viewport */
+  box-sizing: border-box;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.column-header h3 {
+  font-size: 18px;
+  color: #000000;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  /* Prevent the outline on click */
+}
+
+.add-task-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  /* Prevent the outline on click */
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  /* Prevent the outline on click */
+}
+
+.add-task-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  /* Prevent the outline on click */
+  position: relative;
+  /* Set relative positioning */
+  top: -5px;
+  /* Move the button up by 10px, adjust the value as needed */
+}
+
+.icon-btn:focus,
+.add-task-btn:focus {
+  outline: none;
+  /* Ensure no outline is shown when the button is focused */
+}
+
+
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.this-week {
+  font-size: 14px;
+  color: #828282;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  background-color: white;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  list-style: none;
+  border-radius: 4px;
+  z-index: 100;
+}
+
+.dropdown li {
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+}
+
+.dropdown li:hover {
+  background-color: #f1f3f5;
+}
+

@@ -43,7 +43,7 @@ const AuthPage = () => {
           password,
         });
         localStorage.setItem('auth-token', res.data.token);
-        navigate('/dashboard');
+        navigate('/dashboard/board');
       } else {
         // Register logic
         const res = await axios.post('http://localhost:5000/api/users/register', {

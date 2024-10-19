@@ -1,0 +1,13 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  overflow-x: auto; /* Allow horizontal scrolling */
+  padding-left: 270px; /* Offset for the fixed sidebar */
+  display: flex;
+  flex-direction: column;
+}
