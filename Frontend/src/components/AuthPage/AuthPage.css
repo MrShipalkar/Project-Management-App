@@ -1,18 +1,3 @@
-/* Reset margin and padding for body and html */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Set body and html to take full viewport height and width */
-html,
-body {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-}
-
 /* Overall container */
 .auth-container {
   display: flex;
@@ -67,6 +52,7 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 600px;
 }
 
 .auth-right h2 {
@@ -93,6 +79,17 @@ body {
   border: 1.38px solid #d0d0d0;
   background: #ffffff;
   color: #343434;
+  margin-bottom: 10px;
+}
+
+/* Error message styling inside inputs */
+.input-error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 3px; /* Adjusted margin */
+  width: 100%;
+  position: absolute;
+  bottom: -25px; /* Moves the error message slightly closer to the input */
 }
 
 /* Icons inside input fields */
@@ -122,6 +119,7 @@ body {
   cursor: pointer;
 }
 
+/* Button styling */
 .btn-auth {
   width: 100%;
   background-color: #17a2b8;
@@ -131,10 +129,16 @@ body {
   border: none;
   border-radius: 55px;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 25px;
+  transition: all 0.2s ease-in-out;
+  outline: none;
+  border: 2px solid transparent; /* Remove border glitch */
 }
 
-
+.btn-auth:hover {
+  background-color: #007b89;
+  border-color: #007b89;
+}
 
 /* Add specific styles for the toggle button */
 .toggle-btn {
@@ -145,11 +149,12 @@ body {
   padding: 12px;
   width: 100%;
   border-radius: 55px;
-  border: 1.38px solid #17A2B8;
-
+  transition: all 0.2s ease-in-out;
 }
 
-
+.toggle-btn:hover {
+  background-color: #f0f0f0;
+}
 
 /* Keep the toggle text styling */
 .toggle-link {
@@ -157,4 +162,17 @@ body {
   font-size: 0.9rem;
   color: #828282;
   text-align: center;
+}
+
+/* Adjust margins between elements */
+.form-group .input-error {
+  margin-top: 5px;
+}
+.inpt-error{
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 3px; /* Adjusted margin */
+  width: 100%;
+  position: absolute;
+  bottom: 41%; 
 }
