@@ -134,10 +134,7 @@ body {
   margin-top: 10px;
 }
 
-/* Button hover effect */
-.btn-auth:hover {
-  background-color: #007b89;
-}
+
 
 /* Add specific styles for the toggle button */
 .toggle-btn {
@@ -148,11 +145,11 @@ body {
   padding: 12px;
   width: 100%;
   border-radius: 55px;
+  border: 1.38px solid #17A2B8;
+
 }
 
-.toggle-btn:hover {
-  background-color: #f0f0f0;
-}
+
 
 /* Keep the toggle text styling */
 .toggle-link {
