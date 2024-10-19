@@ -1,0 +1,163 @@
+/* Reset margin and padding for body and html */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set body and html to take full viewport height and width */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Overall container */
+.auth-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f9f9f9;
+  overflow: hidden;
+}
+
+/* Left side */
+.auth-left {
+  flex: 1.8;
+  background-color: #17a2b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.auth-left img {
+  max-width: 375px;
+  height: auto;
+}
+
+.auth-welcome {
+  text-align: center;
+}
+
+.auth-welcome h2 {
+  font-weight: 600;
+  font-size: 40px;
+  margin-bottom: 10px;
+  font-family: Open Sans;
+  font-weight: 400;
+  line-height: 38.59px;
+}
+
+.auth-welcome p {
+  font-family: Open Sans;
+  font-size: 19.29px;
+  font-weight: 400;
+  line-height: 38.59px;
+}
+
+/* Right side */
+.auth-right {
+  flex: 1;
+  background-color: white;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-right h2 {
+  font-family: Open Sans;
+  font-size: 33.08px;
+  font-weight: 600;
+  text-align: left;
+  color: #343434;
+  margin-bottom: 50px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
+  position: relative;
+}
+
+/* Input styling */
+.form-group input {
+  width: 493px;
+  height: 55px;
+  padding-left: 40px;
+  border-radius: 11px;
+  border: 1.38px solid #d0d0d0;
+  background: #ffffff;
+  color: #343434;
+}
+
+/* Icons inside input fields */
+.icon-input {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+
+/* Toggle password icon */
+.toggle-password-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.btn-auth {
+  width: 100%;
+  background-color: #17a2b8;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 55px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Button hover effect */
+.btn-auth:hover {
+  background-color: #007b89;
+}
+
+/* Add specific styles for the toggle button */
+.toggle-btn {
+  background-color: #ffffff;
+  color: #17a2b8;
+  border: 2px solid #17a2b8;
+  margin-top: 15px;
+  padding: 12px;
+  width: 100%;
+  border-radius: 55px;
+}
+
+.toggle-btn:hover {
+  background-color: #f0f0f0;
+}
+
+/* Keep the toggle text styling */
+.toggle-link {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  color: #828282;
+  text-align: center;
+}
