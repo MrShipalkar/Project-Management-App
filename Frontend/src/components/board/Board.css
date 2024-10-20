@@ -1,5 +1,6 @@
 .board-container {
-  padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
   background-color: #f9f9f9;
   min-height: 100vh;
   width: auto;
@@ -64,19 +65,24 @@
 .board-columns {
   display: flex;
   justify-content: space-around;
-  gap: 10px;
+  gap: 20px;
   overflow-x: auto;
+  overflow-y: hidden; /* Prevent vertical scrolling if you don't want vertical overflow */
+  max-height: 100vh; /* Maximum height is equal to the viewport height */
+  height: auto;
+  box-sizing: border-box; /* Ensure padding/margins are included in the height */
 }
 
 .board-column {
-  /* margin: 10px; */
-  background-color: #f1f3f5;
+  background-color: #EEF2F5;
   padding-left: 10px;
   border-radius: 8px;
-  min-height: 70vh;
-  min-width: 23%;
-  /* Each column is 1/3rd of the viewport */
+  height: 70vh;
+  min-width: 28%; /* Responsive minimum width */
+  max-width: 28%; /* Limit max width per column */
+  flex: 1; /* Let columns grow and shrink to fit the space */
   box-sizing: border-box;
+  margin-bottom: 2%;
 }
 
 .column-header {
@@ -168,4 +174,37 @@
 .dropdown li:hover {
   background-color: #f1f3f5;
 }
+
+.board-columns::-webkit-scrollbar{
+  background-color: #f1f3f5;
+  height: 10px;
+}
+
+.board-columns::-webkit-scrollbar-thumb{
+  background-color: #9CB7C5;
+  border-radius: 10px;
+}
+
+.board-columns::-webkit-scrollbar-track{
+  background-color: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

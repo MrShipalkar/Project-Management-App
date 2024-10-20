@@ -17,6 +17,8 @@ const Board = () => {
     }
   };
 
+  const userName = localStorage.getItem('user-name') || 'User';
+
   // Get current date
   const currentDate = new Date();
   const day = currentDate.getDate();
@@ -43,7 +45,7 @@ const Board = () => {
     <div className="board-container">
       <header className="board-header">
         <div>
-          <h2>Welcome! Kumar</h2>
+          <h2>Welcome! {userName} </h2>
         </div>
         <div>
           {/* Render the current date here in the correct format */}
@@ -72,7 +74,7 @@ const Board = () => {
         </div>
       </div>
 
-      {/* Columns for tasks */}
+      {/* Board columns */}
       <div className="board-columns">
         <div className="board-column">
           <div className="column-header">

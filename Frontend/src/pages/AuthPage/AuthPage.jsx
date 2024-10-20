@@ -28,13 +28,13 @@ const AuthPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError({});
-
+  
     // Validate passwords when registering
     if (!isLogin && password !== confirmPassword) {
       setError({ confirmPassword: 'Passwords do not match.' });
       return;
     }
-
+  
     try {
       if (isLogin) {
         // Login logic
@@ -42,7 +42,15 @@ const AuthPage = () => {
           email,
           password,
         });
+  
+        // Assuming your backend sends the username in the 'user' object like the register endpoint
+        const { token, user } = res.data;
+  
+        // Store only the username in localStorage
         localStorage.setItem('auth-token', res.data.token);
+        localStorage.setItem('user-name', user.username);
+  
+        // Navigate to the dashboard or board page
         navigate('/dashboard/board');
       } else {
         // Register logic
@@ -66,6 +74,7 @@ const AuthPage = () => {
       }
     }
   };
+  
 
   return (
     <div className="auth-container">
