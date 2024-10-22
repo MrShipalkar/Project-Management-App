@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // For making API requests
+import AddTaskModal from '../addTaskModal/addTaskModal'; // Importing the modal
 import './Board.css';
 import Collapse from '../../assets/collapse.png';
 import Add from '../../assets/add.png';
@@ -9,7 +10,11 @@ import Dropdown from '../../assets/down.png';
 const Board = () => {
   const [userName, setUserName] = useState(''); // State to store the user's name
   const [error, setError] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
+  const [selectedOption, setSelectedOption] = useState('This week'); // Default value for the dropdown
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); // Manage modal open state
 
+  // Fetch user's name on component mount
   useEffect(() => {
     const fetchUserName = async () => {
       try {
@@ -32,7 +37,7 @@ const Board = () => {
     };
 
     fetchUserName();
-  }, []); // The empty dependency array ensures the effect runs only once on component mount
+  }, []); // Empty dependency array ensures the effect runs only once on component mount
 
   // Helper function to get ordinal suffix (st, nd, rd, th)
   const getOrdinalSuffix = (day) => {
@@ -52,10 +57,6 @@ const Board = () => {
   const year = currentDate.getFullYear();
   const formattedDate = `${day}${getOrdinalSuffix(day)} ${month}, ${year}`;
 
-  // State to manage dropdown and selected option
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('This week'); // Default value
-
   // Toggle the dropdown visibility
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -74,7 +75,6 @@ const Board = () => {
           <h2>Welcome! {userName || 'User'} </h2> {/* Fallback to 'User' if the name is not yet available */}
         </div>
         <div>
-          {/* Render the current date here in the correct format */}
           <p>{formattedDate}</p>
         </div>
       </header>
@@ -102,7 +102,6 @@ const Board = () => {
         </div>
       </div>
 
-      {/* Board columns */}
       <div className="board-columns">
         <div className="board-column">
           <div className="column-header">
@@ -117,7 +116,7 @@ const Board = () => {
           <div className="column-header">
             <h3>To do</h3>
             <div>
-              <button className="add-task-btn">
+              <button className="add-task-btn" onClick={() => setIsAddTaskModalOpen(true)}>
                 <img src={Add} alt="Add Task" />
               </button>
               <button className="icon-btn">
@@ -145,6 +144,12 @@ const Board = () => {
           </div>
         </div>
       </div>
+
+      {/* Add Task Modal */}
+      <AddTaskModal
+        isOpen={isAddTaskModalOpen}
+        onClose={() => setIsAddTaskModalOpen(false)} // Close modal
+      />
     </div>
   );
 };
