@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'; // For making API requests
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
 import './Settings.css';
 import View from '../../assets/view.png';
 import Hide from '../../assets/hide.png';
@@ -24,6 +25,7 @@ const Settings = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate for redirection
 
   // Fetch the user data on component mount
   useEffect(() => {
@@ -112,7 +114,19 @@ const Settings = () => {
         }
       );
 
-      setSuccess('Profile updated successfully!');
+      // If the email or password is updated, log the user out and redirect them to the home page
+      if (updates.email || (updates.oldPassword && updates.newPassword)) {
+        localStorage.removeItem('auth-token'); // Remove token
+        setSuccess('Profile updated successfully! You will be logged out.');
+        
+        // Redirect to the homepage after a short delay
+        setTimeout(() => {
+          navigate('/'); // Redirect to the home page
+        }, 1500); // Redirect after 1.5 seconds
+      } else {
+        setSuccess('Profile updated successfully!');
+      }
+      
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.message || 'Something went wrong.');
