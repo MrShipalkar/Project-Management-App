@@ -148,3 +148,22 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+exports.getUserDetails = async (req, res) => {
+  const userId = req.user.id;  // Assumes req.user.id is available from the JWT middleware
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userId).select('name email'); // Only select name and email
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return the user's name and email
+    res.status(200).json({ name: user.name, email: user.email });
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};

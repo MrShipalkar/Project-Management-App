@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // For making API requests
 import './Board.css';
 import Collapse from '../../assets/collapse.png';
 import Add from '../../assets/add.png';
@@ -6,6 +7,33 @@ import Addpeople from '../../assets/Addpeople.png';
 import Dropdown from '../../assets/down.png';
 
 const Board = () => {
+  const [userName, setUserName] = useState(''); // State to store the user's name
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const token = localStorage.getItem('auth-token'); // Get token from localStorage
+
+        if (!token) {
+          throw new Error('No token available');
+        }
+
+        const res = await axios.get('http://localhost:5000/api/users/profile', {
+          headers: {
+            'auth-token': token,  // Attach the token to the headers
+          },
+        });
+
+        setUserName(res.data.name); // Update the state with the fetched user name
+      } catch (error) {
+        setError('Error fetching user details');
+      }
+    };
+
+    fetchUserName();
+  }, []); // The empty dependency array ensures the effect runs only once on component mount
+
   // Helper function to get ordinal suffix (st, nd, rd, th)
   const getOrdinalSuffix = (day) => {
     if (day > 3 && day < 21) return 'th'; // Covers 11th to 19th
@@ -16,8 +44,6 @@ const Board = () => {
       default: return 'th';
     }
   };
-
-  const userName = localStorage.getItem('user-name') || 'User';
 
   // Get current date
   const currentDate = new Date();
@@ -45,13 +71,15 @@ const Board = () => {
     <div className="board-container">
       <header className="board-header">
         <div>
-          <h2>Welcome! {userName} </h2>
+          <h2>Welcome! {userName || 'User'} </h2> {/* Fallback to 'User' if the name is not yet available */}
         </div>
         <div>
           {/* Render the current date here in the correct format */}
           <p>{formattedDate}</p>
         </div>
       </header>
+
+      {error && <p className="error-message">{error}</p>} {/* Display error if there's an issue fetching user details */}
 
       <div className="board-title">
         <div className="board-title-name">

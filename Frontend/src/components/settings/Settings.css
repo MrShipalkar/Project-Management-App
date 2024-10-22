@@ -1,0 +1,105 @@
+/* Form Container */
+.settings-form-container {
+    padding-left: 40px;
+    height: 100vh;
+    background-color: #fff;
+}
+
+.settings-form-container h2 {
+    color: #000;
+    font-family: Open Sans;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: left;
+    margin-bottom: 60px;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px;
+    /* Adds 10px gap between form groups */
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    text-align: left;
+}
+
+.form-group input {
+    width: 450px;
+    height: 50px;
+    padding-left: 40px;
+    /* padding: 10px; */
+    border-radius: 10px;
+    border: 1.38px solid #D0D0D0;
+    font-family: Open Sans;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.password-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    width: 450px;
+    height: 50px;
+    padding-left: 40px;
+    border-radius: 10px;
+    border: 1.38px solid #D0D0D0;
+    font-family: Open Sans;
+    font-size: 15px;
+    font-weight: 400;
+    text-align: left;
+}
+
+.toggle-password {
+    cursor: pointer;
+    margin-left: -50px;
+    font-size: 18px;
+    color: #888;
+}
+
+/* Update Button */
+.update-btn {
+    margin-top: 20px;
+    margin-left: 5px;
+    width: 490px;
+    height: 50px;
+    padding: 10px;
+    border-radius: 55px;
+    background: #17A2B8;
+    font-family: Open Sans;
+    font-size: 19.29px;
+    font-weight: 400;
+}
+
+/* Error Message Styling */
+.error-message {
+    color: #e74c3c; /* Red color to indicate error */
+    padding: 10px; /* Padding around the message */
+    border-radius: 5px; /* Slight rounding of the corners */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    margin-bottom: 20px; /* Space between the error message and other elements */
+    text-align: left; /* Left-align the text */
+    position:absolute;
+    top: 406px;
+  }
+  
+  /* Success Message Styling */
+  .success-message {
+    color: #28a745; /* Green color to indicate success */
+    padding: 10px; /* Padding around the message */
+    border-radius: 5px; /* Slight rounding of the corners */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    margin-bottom: 20px; /* Space between the success message and other elements */
+    text-align: left; /* Left-align the text */
+    position:absolute;
+    top: 406px;
+  }
+  
