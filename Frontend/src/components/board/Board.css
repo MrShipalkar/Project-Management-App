@@ -83,6 +83,20 @@
   flex: 1; /* Let columns grow and shrink to fit the space */
   box-sizing: border-box;
   margin-bottom: 2%;
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.board-column::-webkit-scrollbar {
+  width: 12px; /* Adjust the width of the scrollbar */
+}
+
+.board-column::-webkit-scrollbar-thumb {
+  background-color: #8DAAB9CC;
+  border-radius: 10px;
+}
+
+.board-column::-webkit-scrollbar-track {
+  background-color: #D6EAF4;
 }
 
 .column-header {
@@ -188,21 +202,6 @@
 .board-columns::-webkit-scrollbar-track{
   background-color: #ffffff;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
