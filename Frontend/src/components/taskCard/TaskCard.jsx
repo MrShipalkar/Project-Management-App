@@ -4,11 +4,13 @@ import More from '../../assets/more.png'; // Assuming this is the image for the 
 import DropdownIcon from '../../assets/dropdown.png'; // Add dropdown arrow icon
 import axios from 'axios'; // Import axios for API requests
 import DeleteConfirmationModal from '../deleteModal/DeleteModal';
+import EditTaskModal from '../editTaskModal/EditTaskModal'; // Import the EditTaskModal
 
 const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isCollapsed, onDeleteTask }) => {
     const [isChecklistOpen, setIsChecklistOpen] = useState(false); // State for toggling checklist dropdown
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for toggling "More options" dropdown
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const dropdownRef = useRef(null)
 
     // Collapse checklist if the column's collapse state is true
@@ -51,6 +53,11 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         setIsDropdownOpen(!isDropdownOpen); // Toggle the "More options" dropdown
     };
 
+    const handleEdit = () => {
+        setIsEditModalOpen(true); // Open edit modal when Edit is clicked
+        setIsDropdownOpen(false); // Close dropdown after edit is clicked
+    };
+    
     const handleStatusChange = async (newStatus) => {
         try {
             const token = localStorage.getItem('auth-token'); // Get the auth token
@@ -109,7 +116,7 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     <img src={More} alt="More options" onClick={toggleDropdown} />
                     {isDropdownOpen && (
                         <ul className="dropdown-options">
-                            <li onClick={() => console.log("Edit clicked")}>Edit</li>
+                            <li onClick={handleEdit}>Edit</li>
                             <li onClick={() => console.log("Share clicked")}>Share</li>
                             <li onClick={() => { setIsDeleteModalOpen(true); setIsDropdownOpen(false); }}>Delete</li> 
                         </ul>
@@ -153,6 +160,16 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     {column !== 'done' && <button className="task-status-btn" onClick={() => handleStatusChange('done')}>DONE</button>}
                 </div>
             </div>
+            <EditTaskModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                taskId={taskId}
+                currentTitle={title}
+                currentPriority={priority}
+                currentChecklist={checklist}
+                currentDueDate={dueDate}
+            />
+
             <DeleteConfirmationModal
                 isOpen={isDeleteModalOpen}
                 onClose={() => setIsDeleteModalOpen(false)}
