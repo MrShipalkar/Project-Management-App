@@ -1,21 +1,23 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom'; 
 import './Sidebar.css';
 import Logo from '../../assets/Logo.png';
 import Board from '../../assets/board.png';
 import Analytics from '../../assets/analytics.png';
 import Settings from '../../assets/settings.png';
 import Logout from '../../assets/Logout.png';
-
+import LogoutConfirmationModal from '../logoutModal/LogoutModal'; // Import the logout modal
 
 const Sidebar = () => {
-  const navigate = useNavigate(); // Create the navigate function
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // State to control logout modal
+  const navigate = useNavigate(); 
 
-  // Logout handler to remove the token and redirect to home
-  const handleLogout = () => {
-    localStorage.removeItem('auth-token'); // Remove token from localStorage
+  // Function to handle actual logout
+  const handleConfirmLogout = () => {
+    localStorage.removeItem('auth-token'); 
     localStorage.removeItem('user-name');
-    navigate('/'); // Redirect to the home page
+    setIsLogoutModalOpen(false); // Close the modal
+    navigate('/'); 
   };
 
   return (
@@ -62,14 +64,20 @@ const Sidebar = () => {
         </ul>
       </nav>
       <div className="logout-section">
-        {/* Use onClick for handling the logout functionality */}
-        <div className="logout-link" onClick={handleLogout}>
+        <div className="logout-link" onClick={() => setIsLogoutModalOpen(true)}>
           <span className="sidebar-icon">
             <img src={Logout} alt="Logout Icon" />
           </span>
           Log out
         </div>
       </div>
+
+      {/* Render Logout Modal */}
+      <LogoutConfirmationModal
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleConfirmLogout}
+      />
     </div>
   );
 };

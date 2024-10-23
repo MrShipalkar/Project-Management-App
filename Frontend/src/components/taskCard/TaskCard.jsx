@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import './TaskCard.css'; // Importing CSS
 import More from '../../assets/more.png'; // Assuming this is the image for the 'more' button
 import DropdownIcon from '../../assets/dropdown.png'; // Add dropdown arrow icon
 import axios from 'axios'; // Import axios for API requests
+import DeleteConfirmationModal from '../deleteModal/DeleteModal';
 
-const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isCollapsed }) => {
+const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isCollapsed, onDeleteTask }) => {
     const [isChecklistOpen, setIsChecklistOpen] = useState(false); // State for toggling checklist dropdown
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for toggling "More options" dropdown
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
+    const dropdownRef = useRef(null)
 
     // Collapse checklist if the column's collapse state is true
     useEffect(() => {
@@ -43,6 +47,10 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         setIsChecklistOpen(!isChecklistOpen); // Toggle the checklist
     };
 
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen); // Toggle the "More options" dropdown
+    };
+
     const handleStatusChange = async (newStatus) => {
         try {
             const token = localStorage.getItem('auth-token'); // Get the auth token
@@ -56,6 +64,22 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
             onStatusChange(res.data);
         } catch (error) {
             console.error("Error updating status:", error);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            const token = localStorage.getItem('auth-token');
+            await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+                headers: {
+                    'auth-token': token,
+                },
+            });
+
+            // Notify the parent component (Board) that the task has been deleted
+            onDeleteTask(taskId);
+        } catch (error) {
+            console.error("Error deleting task:", error);
         }
     };
 
@@ -81,7 +105,16 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     <span className={`priority-bullet ${getPriorityClass()}`}></span>
                     {priority.toUpperCase()} PRIORITY
                 </div>
-                <img src={More} alt="More options" />
+                <div className="more-options">
+                    <img src={More} alt="More options" onClick={toggleDropdown} />
+                    {isDropdownOpen && (
+                        <ul className="dropdown-options">
+                            <li onClick={() => console.log("Edit clicked")}>Edit</li>
+                            <li onClick={() => console.log("Share clicked")}>Share</li>
+                            <li onClick={() => { setIsDeleteModalOpen(true); setIsDropdownOpen(false); }}>Delete</li> 
+                        </ul>
+                    )}
+                </div>
             </div>
 
             <h4 className="task-title">{title}</h4>
@@ -120,6 +153,11 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     {column !== 'done' && <button className="task-status-btn" onClick={() => handleStatusChange('done')}>DONE</button>}
                 </div>
             </div>
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={handleDelete}
+            />
         </div>
     );
 };

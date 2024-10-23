@@ -1,0 +1,56 @@
+/* DeleteConfirmationModal.css */
+.delete-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    height: auto;
+    width: 20vw;
+}
+.delete-modal-content h3{
+font-size: 16px;
+font-weight: 600;
+text-align: center;
+color: #000000;
+}
+
+.delete-modal-actions {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.delete-confirm-btn {
+    background-color: #17A2B8;
+    color: white;
+    cursor: pointer;
+    width: Fixed (300px)px;
+height: 45px;
+gap: 10px;
+border-radius: 12px;
+
+}
+
+.delete-cancel-btn {
+    background-color: transparent;
+    color: #CF3636;
+    cursor: pointer;
+    width: Fixed (300px)px;
+height: 45px;
+gap: 10px;
+border-radius: 12px;
+border: 1px solid #CF3636;
+}

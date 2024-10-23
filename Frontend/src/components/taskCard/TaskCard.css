@@ -98,7 +98,7 @@
     padding: 10px;
     border-radius: 12px;
     border: 1px solid #e2e2e2;
-   
+
 }
 
 .checklist-task input[type="checkbox"] {
@@ -185,7 +185,7 @@
 
 .due-date-red {
     background-color: #CF3636;
-    
+
 }
 
 .due-date-green {
@@ -195,4 +195,40 @@
 .due-date-gray {
     background-color: #DBDBDB;
     color: #5A5A5A;
+}
+
+.more-options {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-options {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    background-color: white;
+    border-radius: 12px;
+    list-style: none;
+    padding: 5px 0;
+    width: 100px;
+    z-index: 10;
+    box-shadow: 0px 2px 22px 0px #7E7A7A40;
+}
+
+.dropdown-options li {
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #000000;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.dropdown-options li:last-child {
+    color: #CF3636;
+}
+
+.more-options img{
+    cursor: pointer;
 }
