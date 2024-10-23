@@ -29,6 +29,11 @@
     display: block;
     color: #20102B;
 }
+.input-label::after {
+    content: '*';
+    color: red; /* Make the asterisk red */
+    margin-left: 5px; /* Add some space between the text and the asterisk */
+}
 
 .modal-input {
     width: 95%;

@@ -5,6 +5,9 @@ exports.createTask = async (req, res) => {
   const { title, priority, dueDate, checklist, assignedTo } = req.body;
 
   try {
+    // Log the request body to check what is being sent
+    console.log(req.body);
+
     // Check for required fields
     if (!title || !priority || !checklist) {
       return res
@@ -17,8 +20,8 @@ exports.createTask = async (req, res) => {
       title,
       priority,
       dueDate,
-      checklist, // Checklist array
-      status: "backlog", // Initial status is 'backlog'
+      checklist, // Ensure checklist matches your expected structure
+      status: "to-do", // Initial status is 'backlog'
       createdBy: req.user.id, // Assuming req.user.id comes from JWT middleware
       assignedTo,
     });
@@ -26,9 +29,11 @@ exports.createTask = async (req, res) => {
     await task.save();
     res.status(201).json(task);
   } catch (error) {
+    console.error(error); // Log the error to inspect
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Get all tasks created by the logged-in user
 exports.getUserTasks = async (req, res) => {
