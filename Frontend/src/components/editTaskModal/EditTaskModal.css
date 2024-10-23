@@ -30,10 +30,11 @@
 }
 .edit-assign-label{
     font-weight: 500;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     display: block;
     color: #20102B;
     margin-right: 10px;
+    font-size: 16px;
 }
 .edit-input-label::after {
     content: '*';
@@ -101,6 +102,19 @@
     max-height: 200px;
     overflow-y: auto;
 }
+.edit-checklist-container::-webkit-scrollbar{
+    background-color: #f1f3f5;
+    height: 10px;
+  }
+  
+  .edit-checklist-container::-webkit-scrollbar-thumb{
+    background-color: #9CB7C5;
+    border-radius: 10px;
+  }
+  
+  .edit-checklist-container::-webkit-scrollbar-track{
+    background-color: #ffffff;
+  }
 
 .edit-checklist-item {
     display: flex;
@@ -227,4 +241,11 @@
 .assign-fun{
     display: flex;
     align-items: center;
+}
+
+
+.edit-priority-sec{
+    display: flex;
+    gap: 10px;
+    width: 95%;
 }

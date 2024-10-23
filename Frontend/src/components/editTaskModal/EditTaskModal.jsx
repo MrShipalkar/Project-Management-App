@@ -63,9 +63,9 @@ const EditTaskModal = ({ isOpen, onClose, taskId, currentTitle, currentPriority,
                     'auth-token': token,
                 },
             });
-            
+
             setSuccess('Task updated successfully!');
-            onClose(); 
+            onClose();
             window.location.reload();
         } catch (err) {
             setError('Failed to update the task. Please try again.');
@@ -110,17 +110,17 @@ const EditTaskModal = ({ isOpen, onClose, taskId, currentTitle, currentPriority,
                         </button>
                     </div>
                 </div>
-<div className='assign-fun'>
-<label className="edit-assign-label">Assign to</label>
-                <input
-                    type="text"
-                    className="edit-modal-input"
-                    value={assignTo}
-                    onChange={(e) => setAssignTo(e.target.value)}
-                    placeholder="Add an assignee"
-                />
-</div>
-                
+                <div className='assign-fun'>
+                    <label className="edit-assign-label">Assign to</label>
+                    <input
+                        type="text"
+                        className="edit-modal-input"
+                        value={assignTo}
+                        onChange={(e) => setAssignTo(e.target.value)}
+                        placeholder="Add an assignee"
+                    />
+                </div>
+
 
                 <label className="edit-input-label">Checklist ({checklist.filter(item => item.checked).length}/{checklist.length})</label>
                 <div className="edit-checklist-container">

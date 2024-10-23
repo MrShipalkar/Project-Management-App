@@ -14,28 +14,22 @@ const Board = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
     const [selectedOption, setSelectedOption] = useState('This week'); 
     const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); 
-    const [tasks, setTasks] = useState([]); 
+    const [tasks, setTasks] = useState([]);
+    const [expandedChecklists, setExpandedChecklists] = useState({}); // Track which checklists are open
 
     useEffect(() => {
         const fetchUserName = async () => {
             try {
                 const token = localStorage.getItem('auth-token');
-                if (!token) {
-                    throw new Error('No token available');
-                }
-
+                if (!token) throw new Error('No token available');
                 const res = await axios.get('http://localhost:5000/api/users/profile', {
-                    headers: {
-                        'auth-token': token,
-                    },
+                    headers: { 'auth-token': token },
                 });
-
                 setUserName(res.data.name);
             } catch (error) {
                 setError('Error fetching user details');
             }
         };
-
         fetchUserName();
     }, []);
 
@@ -43,14 +37,9 @@ const Board = () => {
         const fetchTasks = async () => {
             try {
                 const token = localStorage.getItem('auth-token');
-                if (!token) {
-                    throw new Error('No token found');
-                }
-
+                if (!token) throw new Error('No token found');
                 const res = await axios.get('http://localhost:5000/api/tasks', {
-                    headers: {
-                        'auth-token': token,
-                    },
+                    headers: { 'auth-token': token },
                 });
                 setTasks(res.data);
             } catch (error) {
@@ -58,33 +47,35 @@ const Board = () => {
                 setError('Error fetching tasks');
             }
         };
-
         fetchTasks();
     }, []);
 
     const handleStatusChange = (updatedTask) => {
-        setTasks((prevTasks) => 
-            prevTasks.map((task) => (task._id === updatedTask._id ? updatedTask : task))
+        setTasks(prevTasks => 
+            prevTasks.map(task => (task._id === updatedTask._id ? updatedTask : task))
         );
     };
 
     const handleDeleteTask = (deletedTaskId) => {
-        setTasks((prevTasks) => prevTasks.filter((task) => task._id !== deletedTaskId));
+        setTasks(prevTasks => prevTasks.filter(task => task._id !== deletedTaskId));
     };
 
     const filterTasksByStatus = (status) => {
         return tasks.filter(task => task.status === status);
     };
 
+    const handleToggleChecklist = (taskId) => {
+        setExpandedChecklists(prev => ({
+            ...prev,
+            [taskId]: !prev[taskId] // Toggle checklist for this task
+        }));
+    };
+
     return (
         <div className="board-container">
             <header className="board-header">
-                <div>
-                    <h2>Welcome! {userName || 'User'} </h2>
-                </div>
-                <div>
-                    <p>{new Date().toDateString()}</p>
-                </div>
+                <div><h2>Welcome! {userName || 'User'} </h2></div>
+                <div><p>{new Date().toDateString()}</p></div>
             </header>
 
             {error && <p className="error-message">{error}</p>}
@@ -114,8 +105,8 @@ const Board = () => {
                 <div className="board-column">
                     <div className="column-header">
                         <h3>Backlog</h3>
-                        <button className="icon-btn">
-                            <img src={Collapse} alt="Collapse" />
+                        <button className="icon-btn" onClick={() => setExpandedChecklists({})}>
+                            <img src={Collapse} alt="Collapse All" />
                         </button>
                     </div>
                     {filterTasksByStatus('backlog').map(task => (
@@ -128,6 +119,8 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="backlog"
                             onStatusChange={handleStatusChange}
+                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
                         />
                     ))}
@@ -140,8 +133,8 @@ const Board = () => {
                             <button className="add-task-btn" onClick={() => setIsAddTaskModalOpen(true)}>
                                 <img src={Add} alt="Add Task" />
                             </button>
-                            <button className="icon-btn">
-                                <img src={Collapse} alt="Collapse" />
+                            <button className="icon-btn" onClick={() => setExpandedChecklists({})}>
+                                <img src={Collapse} alt="Collapse All" />
                             </button>
                         </div>
                     </div>
@@ -155,6 +148,8 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="to-do"
                             onStatusChange={handleStatusChange}
+                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
                         />
                     ))}
@@ -163,8 +158,8 @@ const Board = () => {
                 <div className="board-column">
                     <div className="column-header">
                         <h3>In progress</h3>
-                        <button className="icon-btn">
-                            <img src={Collapse} alt="Collapse" />
+                        <button className="icon-btn" onClick={() => setExpandedChecklists({})}>
+                            <img src={Collapse} alt="Collapse All" />
                         </button>
                     </div>
                     {filterTasksByStatus('in-progress').map(task => (
@@ -177,6 +172,8 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="progress"
                             onStatusChange={handleStatusChange}
+                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
                         />
                     ))}
@@ -185,8 +182,8 @@ const Board = () => {
                 <div className="board-column">
                     <div className="column-header">
                         <h3>Done</h3>
-                        <button className="icon-btn">
-                            <img src={Collapse} alt="Collapse" />
+                        <button className="icon-btn" onClick={() => setExpandedChecklists({})}>
+                            <img src={Collapse} alt="Collapse All" />
                         </button>
                     </div>
                     {filterTasksByStatus('done').map(task => (
@@ -199,6 +196,8 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="done"
                             onStatusChange={handleStatusChange}
+                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
                         />
                     ))}
