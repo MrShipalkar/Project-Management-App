@@ -249,3 +249,62 @@
     gap: 10px;
     width: 95%;
 }
+
+.assign-fun {
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .assign-dropdown {
+    position: absolute;
+    top: 50px;
+    left: 78px;
+    width: 88%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #7E7A7A14;
+    border-radius: 4px;
+    z-index: 10;
+  }
+  
+  .assign-dropdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+    color: #000;
+  }
+  
+
+  
+  .assign-btn {
+    background-color: #fff;
+    color: #767575;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 154px;
+height:31px;
+border-radius: 8px;
+border: 1px solid #E2E2E2;
+  }
+  
+  .avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 41px;
+    height: 41px;
+    background-color: #FFEBEB;
+    border-radius: 50%;
+    font-weight: bold;
+    color: #666;
+    margin-right: 10px;
+  }
+  
+  .user-email {
+    flex-grow: 1;
+  }
+  

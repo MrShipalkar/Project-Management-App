@@ -4,7 +4,8 @@ const {
   getUserTasks,
   updateTask,
   deleteTask,
-  getTasks
+  getTasks,
+  getTaskById
 } = require('../controllers/taskController');
 const auth = require('../middleware/auth');  // Middleware to protect routes
 
@@ -21,6 +22,7 @@ router.put('/:taskId', auth, updateTask);
 
 // Delete a task
 router.delete('/:taskId', auth, deleteTask);
-router.get('/filter', getTasks);
+router.get('/filter',auth, getTasks);
+router.get('/:taskId', auth, getTaskById);
 
 module.exports = router;

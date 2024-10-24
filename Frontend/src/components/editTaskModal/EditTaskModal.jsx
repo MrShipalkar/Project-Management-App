@@ -4,21 +4,57 @@ import axios from 'axios';
 import Delete from '../../assets/Delete.png';
 import Plus from '../../assets/plus.png';
 
-const EditTaskModal = ({ isOpen, onClose, taskId, currentTitle, currentPriority, currentChecklist, currentDueDate }) => {
-    const [title, setTitle] = useState(currentTitle || '');
-    const [priority, setPriority] = useState(currentPriority || '');
-    const [checklist, setChecklist] = useState(currentChecklist || [{ text: '', checked: false }]);
-    const [dueDate, setDueDate] = useState(currentDueDate || '');
-    const [assignTo, setAssignTo] = useState(''); // New field for "Assign To"
+const EditTaskModal = ({ isOpen, onClose, taskId }) => {
+    const [title, setTitle] = useState('');
+    const [priority, setPriority] = useState('');
+    const [checklist, setChecklist] = useState([{ text: '', checked: false }]);
+    const [dueDate, setDueDate] = useState('');
+    const [assignTo, setAssignTo] = useState(''); // Assigned user's ID
+    const [selectedUser, setSelectedUser] = useState(''); // Assigned user's email
+    const [users, setUsers] = useState([]); // Store fetched users
+    const [showDropdown, setShowDropdown] = useState(false); // Control dropdown visibility
+    const [isCreator, setIsCreator] = useState(false); // Flag to check if current user is the creator
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
     useEffect(() => {
-        setTitle(currentTitle);
-        setPriority(currentPriority);
-        setChecklist(currentChecklist);
-        setDueDate(currentDueDate);
-    }, [currentTitle, currentPriority, currentChecklist, currentDueDate]);
+        if (isOpen && taskId) {
+            fetchTaskDetails(); // Fetch task details when the modal opens
+            fetchUsers(); // Fetch users for the dropdown
+        }
+    }, [isOpen, taskId]);
+
+    const fetchTaskDetails = async () => {
+        try {
+            const token = localStorage.getItem('auth-token');
+            const res = await axios.get(`http://localhost:5000/api/tasks/${taskId}`, {
+                headers: { 'auth-token': token },
+            });
+
+            const { task, isCreator } = res.data;
+            setTitle(task.title);
+            setPriority(task.priority);
+            setChecklist(task.checklist);
+            setDueDate(task.dueDate);
+            setAssignTo(task.assignedTo?._id || ''); // Pre-populate assigned user's ID
+            setSelectedUser(task.assignedTo?.email || ''); // Pre-populate assigned user's email
+            setIsCreator(isCreator); // Set creator flag
+        } catch (err) {
+            console.error('Failed to fetch task details:', err);
+        }
+    };
+
+    const fetchUsers = async () => {
+        try {
+            const token = localStorage.getItem('auth-token');
+            const res = await axios.get('http://localhost:5000/api/users/getusers', {
+                headers: { 'auth-token': token },
+            });
+            setUsers(res.data); // Assuming res.data is an array of users
+        } catch (err) {
+            console.error('Failed to fetch users:', err);
+        }
+    };
 
     const handleChecklistChange = (index, value) => {
         const newChecklist = [...checklist];
@@ -52,12 +88,12 @@ const EditTaskModal = ({ isOpen, onClose, taskId, currentTitle, currentPriority,
             priority,
             checklist,
             dueDate,
-            assignTo,
+            assignedTo: assignTo, // Send the selected user's ID
         };
 
         try {
             const token = localStorage.getItem('auth-token');
-            const res = await axios.put(`http://localhost:5000/api/tasks/${taskId}`, taskData, {
+            await axios.put(`http://localhost:5000/api/tasks/${taskId}`, taskData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'auth-token': token,
@@ -71,6 +107,12 @@ const EditTaskModal = ({ isOpen, onClose, taskId, currentTitle, currentPriority,
             setError('Failed to update the task. Please try again.');
             console.error(err);
         }
+    };
+
+    const handleAssignToSelect = (user) => {
+        setAssignTo(user._id); // Set user ID to be assigned
+        setSelectedUser(user.email); // Display user's email in the input field
+        setShowDropdown(false); // Close the dropdown after selection
     };
 
     if (!isOpen) return null;
@@ -110,17 +152,28 @@ const EditTaskModal = ({ isOpen, onClose, taskId, currentTitle, currentPriority,
                         </button>
                     </div>
                 </div>
-                <div className='assign-fun'>
+
+                <div className="assign-fun">
                     <label className="edit-assign-label">Assign to</label>
                     <input
                         type="text"
                         className="edit-modal-input"
-                        value={assignTo}
-                        onChange={(e) => setAssignTo(e.target.value)}
-                        placeholder="Add an assignee"
+                        value={selectedUser}
+                        onClick={() => isCreator && setShowDropdown(!showDropdown)} // Only allow the creator to open the dropdown
+                        readOnly={!isCreator} // Make input non-editable if the user is not the creator
+                        placeholder="Select a user"
                     />
+                    {showDropdown && (
+                        <div className="assign-dropdown">
+                            {users.map((user, index) => (
+                                <div key={index} className="assign-dropdown-item" onClick={() => handleAssignToSelect(user)}>
+                                    <span className="avatar">{user.name.charAt(0)}{user.name.charAt(1)}</span>
+                                    <span className="user-email">{user.email}</span>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
-
 
                 <label className="edit-input-label">Checklist ({checklist.filter(item => item.checked).length}/{checklist.length})</label>
                 <div className="edit-checklist-container">

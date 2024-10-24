@@ -19,7 +19,7 @@ const Analytics = () => {
     const fetchTasks = async () => {
       try {
         const token = localStorage.getItem('auth-token'); // Assuming token is stored in localStorage
-        const res = await axios.get('http://localhost:5000/api/tasks', {
+        const res = await axios.get('http://localhost:5000/api/tasks/filter', {
           headers: {
             'auth-token': token,
           },
