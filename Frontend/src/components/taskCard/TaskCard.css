@@ -54,6 +54,32 @@
     font-size: 18px;
     font-weight: 500;
     text-align: left;
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px; /* Adjust this based on your layout */
+    cursor: pointer;
+}
+/* Tooltip styling */
+.tooltip-text {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 10;
+    top: -25px; /* Position the tooltip above the title */
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+    max-width: 500px; /* Maximum width for the tooltip */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Checklist Section */

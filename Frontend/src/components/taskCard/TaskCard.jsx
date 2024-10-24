@@ -79,6 +79,12 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         return 'due-date-gray';
     };
 
+    // Truncate title if it exceeds the character limit (20 characters in this example)
+    const truncateTitle = (title) => {
+        const limit = 20;
+        return title.length > limit ? title.substring(0, limit) + '...' : title;
+    };
+
     return (
         <div className="task-card">
             <div className='task-header-sec'>
@@ -98,7 +104,14 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                 </div>
             </div>
 
-            <h4 className="task-title">{title}</h4>
+            {/* Display truncated title with a tooltip showing the full title */}
+            <h4 className="task-title" title={title}>
+    {title}
+    <span className="tooltip-text">{title}</span> {/* Full title inside the tooltip */}
+</h4>
+
+
+
 
             <div className="task-checklist" onClick={onToggleChecklist}>
                 Checklist ({checklist.filter(item => item.checked).length}/{checklist.length})
