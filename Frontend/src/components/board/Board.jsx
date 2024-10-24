@@ -70,7 +70,26 @@ const Board = () => {
             [taskId]: !prev[taskId] // Toggle checklist for this task
         }));
     };
-
+    useEffect(() => {
+        const fetchTasks = async () => {
+            try {
+                const token = localStorage.getItem('auth-token');
+                if (!token) throw new Error('No token found');
+                
+                // Pass the selected filter option to the backend as a query parameter
+                const res = await axios.get(`http://localhost:5000/api/tasks/filter?filter=${selectedOption}`, {
+                    headers: { 'auth-token': token },
+                });
+    
+                setTasks(res.data);
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+                setError('Error fetching tasks');
+            }
+        };
+        fetchTasks();
+    }, [selectedOption]);  // Run this effect when `selectedOption` changes
+    
     return (
         <div className="board-container">
             <header className="board-header">

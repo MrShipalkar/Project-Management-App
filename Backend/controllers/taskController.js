@@ -102,3 +102,48 @@ exports.deleteTask = async (req, res) => {
     }
   };
   
+  exports.getTasks = async (req, res) => {
+    try {
+        const { filter } = req.query;
+
+        let filterCriteria = {};
+
+        if (filter === 'Today') {
+            const todayStart = new Date();
+            todayStart.setHours(0, 0, 0, 0);
+            const todayEnd = new Date();
+            todayEnd.setHours(23, 59, 59, 999);
+
+            filterCriteria.dueDate = {
+                $gte: todayStart,
+                $lte: todayEnd,
+            };
+        } else if (filter === 'This Week') {
+            const today = new Date();
+            const firstDayOfWeek = new Date(today.setDate(today.getDate() - today.getDay())); // Sunday
+            firstDayOfWeek.setHours(0, 0, 0, 0);
+            const lastDayOfWeek = new Date(firstDayOfWeek);
+            lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+            lastDayOfWeek.setHours(23, 59, 59, 999);
+
+            filterCriteria.dueDate = {
+                $gte: firstDayOfWeek,
+                $lte: lastDayOfWeek,
+            };
+        } else if (filter === 'This Month') {
+            const firstDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+            const lastDayOfMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0);
+            lastDayOfMonth.setHours(23, 59, 59, 999);
+
+            filterCriteria.dueDate = {
+                $gte: firstDayOfMonth,
+                $lte: lastDayOfMonth,
+            };
+        }
+
+        const tasks = await Task.find(filterCriteria);
+        res.status(200).json(tasks);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching tasks' });
+    }
+};
