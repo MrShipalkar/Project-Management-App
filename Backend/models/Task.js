@@ -24,10 +24,12 @@ const taskSchema = new mongoose.Schema({
       checked: { type: Boolean, default: false },  // Mark checklist item completion
     }
   ],
-  assignedTo: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',  // Reference to User model for task assignment
-  },
+  assignedTo: 
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  ,
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',  // The creator of the task

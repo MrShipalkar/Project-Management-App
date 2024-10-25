@@ -5,9 +5,11 @@ const {
   updateTask,
   deleteTask,
   getTasks,
-  getTaskById
+  getTaskById,
+  assignTasksToUser,
 } = require('../controllers/taskController');
 const auth = require('../middleware/auth');  // Middleware to protect routes
+
 
 const router = express.Router();
 
@@ -24,5 +26,11 @@ router.put('/:taskId', auth, updateTask);
 router.delete('/:taskId', auth, deleteTask);
 router.get('/filter',auth, getTasks);
 router.get('/:taskId', auth, getTaskById);
+
+// Assign tasks to all users
+
+router.patch('/assign', auth, assignTasksToUser);
+
+
 
 module.exports = router;

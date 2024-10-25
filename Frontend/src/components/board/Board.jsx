@@ -7,6 +7,7 @@ import Add from '../../assets/add.png';
 import Addpeople from '../../assets/Addpeople.png';
 import Dropdown from '../../assets/down.png';
 import TaskCard from '../taskCard/TaskCard'; 
+import AddPeopleModal from '../addPeopleModal/AddPeopleModal';
 
 const Board = () => {
     const [userName, setUserName] = useState('');
@@ -16,6 +17,7 @@ const Board = () => {
     const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); 
     const [tasks, setTasks] = useState([]);
     const [expandedChecklists, setExpandedChecklists] = useState({}); // Track which checklists are open
+    const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false); 
 
     useEffect(() => {
         const fetchUserName = async () => {
@@ -70,6 +72,12 @@ const Board = () => {
             [taskId]: !prev[taskId] // Toggle checklist for this task
         }));
     };
+
+    const handleAddPeopleClick = () => {
+        setIsAddPeopleModalOpen(true); // Open the AddPeopleModal
+    };
+
+
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -102,7 +110,7 @@ const Board = () => {
             <div className="board-title">
                 <div className="board-title-name">
                     <h3>Board</h3>
-                    <div className="add-people-btn">
+                    <div className="add-people-btn" onClick={handleAddPeopleClick}>
                         <img src={Addpeople} alt="Add People" /> Add People
                     </div>
                 </div>
@@ -222,6 +230,11 @@ const Board = () => {
                     ))}
                 </div>
             </div>
+              {/* AddPeopleModal Component */}
+              <AddPeopleModal
+                isOpen={isAddPeopleModalOpen}
+                onClose={() => setIsAddPeopleModalOpen(false)}
+            />
 
             <AddTaskModal
                 isOpen={isAddTaskModalOpen}

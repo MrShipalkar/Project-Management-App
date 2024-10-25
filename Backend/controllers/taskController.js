@@ -1,4 +1,7 @@
-const Task = require("../models/Task");
+const Task = require("../models/Task.js");
+const User = require('../models/User.js');
+const mongoose = require('mongoose');
+
 
 // Create a new task
 exports.createTask = async (req, res) => {
@@ -176,20 +179,77 @@ exports.getTasks = async (req, res) => {
 exports.getTaskById = async (req, res) => {
     try {
         const { taskId } = req.params;
-
-        // Populate 'assignedTo' field with user details (name and email)
-        const task = await Task.findById(taskId).populate('assignedTo', 'name email');
         
+        // Log the received taskId for debugging
+        console.log('Received taskId:', taskId);
+
+        // Validate if `taskId` is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(taskId)) {
+            console.error('Invalid task ID format');
+            return res.status(400).json({ message: 'Invalid task ID format' });
+        }
+
+        // Attempt to find the task
+        const task = await Task.findById(taskId).populate('assignedTo', 'name email');
+
         if (!task) {
+            console.error('Task not found:', taskId);
             return res.status(404).json({ message: 'Task not found' });
         }
 
         // Check if the logged-in user is the creator of the task
         const isCreator = task.createdBy.toString() === req.user.id;
+        
+        // Log the task and creator information
+        console.log('Task found:', task);
+        console.log('Is user the creator?', isCreator);
 
         res.status(200).json({ task, isCreator });
     } catch (error) {
-        console.error('Error fetching task:', error);
-        res.status(500).json({ message: 'Server error' });
+        // Log the full error details for further analysis
+        console.error('Server Error:', error);
+        res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+
+
+exports.assignTasksToUser = async (req, res) => {
+    try {
+      const { email } = req.body; // Email of the user to assign tasks to
+      const currentUserId = req.user.id; // Current logged-in user ID (from middleware)
+  
+      console.log("Received email:", email);
+      console.log("Current User ID:", currentUserId);
+  
+      // Find the user to whom tasks should be assigned
+      const assignToUser = await User.findOne({ email });
+      if (!assignToUser) {
+        console.log("User not found for email:", email);
+        return res.status(404).json({ message: "User not found" });
+      }
+      console.log("Assigning tasks to User ID:", assignToUser._id);
+  
+      // Find all tasks created by the current user
+      const tasksToUpdate = await Task.find({ createdBy: currentUserId });
+      console.log("Number of tasks to update:", tasksToUpdate.length);
+  
+      if (tasksToUpdate.length === 0) {
+        return res.status(404).json({ message: "No tasks found to assign" });
+      }
+  
+      // Update the `assignedTo` field for each task to the specified user's ID
+      const updateResult = await Task.updateMany(
+        { createdBy: currentUserId },
+        { $set: { assignedTo: assignToUser._id } }
+      );
+  
+      res.status(200).json({
+        message: `All tasks created by you have been assigned to ${email}.`,
+        updatedCount: updateResult.modifiedCount,
+      });
+    } catch (error) {
+      console.error("Error in assignTasksToUser:", error.message);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
+  
