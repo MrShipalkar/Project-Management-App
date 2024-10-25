@@ -7,6 +7,7 @@ const {
   getTasks,
   getTaskById,
   assignTasksToUser,
+  publicshare
 } = require('../controllers/taskController');
 const auth = require('../middleware/auth');  // Middleware to protect routes
 
@@ -30,6 +31,12 @@ router.get('/:taskId', auth, getTaskById);
 // Assign tasks to all users
 
 router.patch('/assign', auth, assignTasksToUser);
+
+// Public share
+
+router.get('/task/:taskId', publicshare);
+
+
 
 
 

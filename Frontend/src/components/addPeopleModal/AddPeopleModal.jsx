@@ -21,7 +21,7 @@ const AddPeopleModal = ({ isOpen, onClose }) => {
             setSuccessMessage(`${email} added to board`);
         } catch (error) {
             console.error('Error assigning tasks:', error);
-            setErrorMessage('Failed to assign tasks. Please try again.');
+            setErrorMessage('user not found with this email');
         }
     };
 

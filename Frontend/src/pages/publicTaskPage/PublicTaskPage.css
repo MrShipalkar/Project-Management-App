@@ -1,0 +1,254 @@
+/* Full-page container */
+.full-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #FFFFFF;
+}
+
+/* The box containing the task details */
+.public-task-page {
+    position: relative;
+    /* Allow positioning inside this container */
+    width: 35%;
+    max-height: 80%;
+    padding: 50px 10px 50px 30px;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    border: 2px solid #EDF5FE;
+    color: black;
+}
+
+/* Logo section styles */
+.logo-section {
+    position: absolute;
+    color: #000000;
+    width: 200px;
+    height: 24px;
+    top: 32px;
+    left: 83px;
+    gap: 20px;
+    opacity: 0px;
+    display: flex;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    align-items: center;
+}
+
+.logo {
+    width: 26px;
+    height: 26px;
+    top: 32px;
+    left: 43px;
+    gap: 0px;
+    opacity: 0px;
+
+}
+
+.task-title {
+    font-size: 24px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.checklist-count {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.checklist-section {
+    max-height: 45vh;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.checklist-section::-webkit-scrollbar {
+    background-color: #f1f3f5;
+    width: 10px;
+}
+
+.checklist-section::-webkit-scrollbar-thumb {
+    background-color: #9CB7C5;
+    border-radius: 10px;
+}
+
+.checklist-section::-webkit-scrollbar-track {
+    background-color: #ffffff;
+}
+
+.checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.checklist li {
+    list-style: none;
+    padding: 0px 10px;
+    width: 95%;
+    min-height: 53px;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid #E2E2E2;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.checklist li input {
+    width: 18px;
+    height: 18px;
+    padding: 6px 4.5px 6px 5px;
+    border-radius: 6px;
+    border: 2px solid #17A2B8;
+    color: #17A2B8;
+}
+
+.checklist li span {
+    margin-left: 10px;
+}
+
+.due-date {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.due-date span {
+    margin-right: 20px;
+    color: #000000;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* Due date button styling */
+.public-date-btn {
+    padding: 5px 10px;
+    border: none;
+    width: 92px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.due-date-red {
+    background-color: #f44336; /* Red for overdue */
+    color: white;
+}
+
+.due-date-green {
+    background-color: #4CAF50; /* Green for done */
+    color: white;
+}
+
+.due-date-gray {
+    background-color: #9E9E9E; /* Gray for active and not overdue */
+    color: white;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 18px;
+}
+
+.task-priority {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 12px;
+}
+
+.priority-bullet {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+
+/* Media queries for responsiveness */
+
+/* Mobile devices (max-width: 768px) */
+@media (max-width: 768px) {
+    .public-task-page {
+        width: 80%; /* Full width for mobile */
+        padding: 30px 15px;
+        max-height: 100%;
+        height: auto;
+    }
+
+    .task-title {
+        font-size: 20px; /* Smaller title */
+    }
+
+    .checklist-count {
+        font-size: 14px; /* Smaller checklist count */
+    }
+
+    .checklist li {
+        font-size: 16px; /* Smaller checklist item text */
+        min-height: 45px; /* Smaller checklist item height */
+    }
+
+    .public-date-btn {
+        width: 80px;
+        height: 28px;
+        font-size: 14px;
+    }
+
+    .logo {
+        width: 22px;
+        height: 22px;
+    }
+
+    .logo-section {
+        top: 20px;
+        left: 20px;
+    }
+}
+
+/* Smaller mobile devices (max-width: 480px) */
+@media (max-width: 480px) {
+    .public-task-page {
+        width: 80%; /* Almost full width for smaller screens */
+        padding: 20px;
+        height: auto;
+    }
+
+    .task-title {
+        font-size: 18px; /* Smaller title */
+    }
+
+    .checklist-count {
+        font-size: 12px; /* Smaller checklist count */
+    }
+
+    .checklist li {
+        font-size: 14px; /* Smaller checklist item text */
+        min-height: 40px; /* Smaller checklist item height */
+    }
+
+    .public-date-btn {
+        width: 70px;
+        height: 25px;
+        font-size: 12px;
+    }
+
+    .logo {
+        width: 20px;
+        height: 20px;
+    }
+
+    .logo-section {
+        top: 15px;
+        left: 15px;
+    }
+}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import './TaskCard.css';
 import More from '../../assets/more.png';
 import DropdownIcon from '../../assets/dropdown.png';
@@ -10,6 +10,7 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [shareMessage, setShareMessage] = useState(''); // To display a message when the link is copied
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -85,6 +86,17 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         return title.length > limit ? title.substring(0, limit) + '...' : title;
     };
 
+    const handleShare = () => {
+        const shareableLink = `${window.location.origin}/task/${taskId}`;
+        navigator.clipboard.writeText(shareableLink).then(() => {
+            setShareMessage('Link copied to clipboard!');
+            setTimeout(() => setShareMessage(''), 3000); // Clear message after 3 seconds
+        }).catch(() => {
+            setShareMessage('Failed to copy link. Please try again.');
+        });
+    };
+    
+
     return (
         <div className="task-card">
             <div className='task-header-sec'>
@@ -97,8 +109,8 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     {isDropdownOpen && (
                         <ul className="dropdown-options">
                             <li onClick={handleEdit}>Edit</li>
-                            <li onClick={() => console.log("Share clicked")}>Share</li>
-                            <li onClick={() => { setIsDeleteModalOpen(true); setIsDropdownOpen(false); }}>Delete</li> 
+                            <li onClick={handleShare}>Share</li> {/* Handle the share click */}
+                            <li onClick={() => { setIsDeleteModalOpen(true); setIsDropdownOpen(false); }}>Delete</li>
                         </ul>
                     )}
                 </div>
@@ -106,12 +118,9 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
 
             {/* Display truncated title with a tooltip showing the full title */}
             <h4 className="task-title" title={title}>
-    {title}
-    <span className="tooltip-text">{title}</span> {/* Full title inside the tooltip */}
-</h4>
-
-
-
+                {truncateTitle(title)}
+                <span className="tooltip-text">{title}</span>
+            </h4>
 
             <div className="task-checklist" onClick={onToggleChecklist}>
                 Checklist ({checklist.filter(item => item.checked).length}/{checklist.length})
@@ -145,6 +154,10 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     {column !== 'done' && <button className="task-status-btn" onClick={() => handleStatusChange('done')}>DONE</button>}
                 </div>
             </div>
+
+            {/* Share message */}
+            {shareMessage && <p className="share-message">{shareMessage}</p>}
+
             <EditTaskModal
                 isOpen={isEditModalOpen}
                 onClose={() => setIsEditModalOpen(false)}
