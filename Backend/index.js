@@ -10,7 +10,7 @@ dotenv.config();
 connectDB()
 
 app.use(express.json());
-app.use(cors())  
+app.use(cors({origin: '*' }))  
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 

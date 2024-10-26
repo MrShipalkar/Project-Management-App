@@ -11,6 +11,7 @@ import AddPeopleModal from '../addPeopleModal/AddPeopleModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 const Board = () => {
     const [userName, setUserName] = useState('');
     const [error, setError] = useState('');
@@ -43,7 +44,7 @@ const Board = () => {
             try {
                 const token = localStorage.getItem('auth-token');
                 if (!token) throw new Error('No token found');
-                const res = await axios.get('http://localhost:5000/api/tasks', {
+                const res = await axios.get('https://project-management-app-backend-8roi.onrender.com/api/tasks', {
                     headers: { 'auth-token': token },
                 });
                 setTasks(res.data);

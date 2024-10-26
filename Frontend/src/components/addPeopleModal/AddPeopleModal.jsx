@@ -4,6 +4,8 @@ import './AddPeopleModal.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import API_URL from '../../services/config'
+
 const AddPeopleModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -15,7 +17,7 @@ const AddPeopleModal = ({ isOpen, onClose }) => {
             const token = localStorage.getItem('auth-token');
     
             
-            await axios.patch('http://localhost:5000/api/tasks/assign', { email }, {
+            await axios.patch(`${API_URL}/api/tasks/assign`, { email }, {
                 headers: { 'auth-token': token },
             });
     
