@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './AddTaskModal.css';
-import axios from 'axios'; // Add Axios for making HTTP requests
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Delete from '../../assets/Delete.png';
 import Plus from '../../assets/plus.png';
 
@@ -10,7 +12,6 @@ const AddTaskModal = ({ isOpen, onClose }) => {
     const [checklist, setChecklist] = useState([{ text: '', checked: false }]);
     const [dueDate, setDueDate] = useState('');
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
 
     const handleChecklistChange = (index, value) => {
         const newChecklist = [...checklist];
@@ -33,9 +34,19 @@ const AddTaskModal = ({ isOpen, onClose }) => {
         setChecklist(newChecklist);
     };
 
+    const formatDueDate = (date) => {
+        const formattedDate = new Date(date);
+        if (!isNaN(formattedDate)) {
+            return formattedDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+        }
+        return ''; // Return empty string if invalid date
+    };
+
     const handleSave = async () => {
         if (!title || !priority || !checklist) {
-            setError('Please fill in all required fields.');
+            const errorMsg = 'Please fill in all required fields.';
+            setError(errorMsg);
+            toast.error(errorMsg); // Show error toast
             return;
         }
 
@@ -43,34 +54,37 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             title,
             priority,
             checklist,
-            dueDate,
+            dueDate: formatDueDate(dueDate), // Ensure consistent date format
         };
 
         try {
-            const token = localStorage.getItem('auth-token'); // Assuming you're storing the JWT token here
-            const res = await axios.post('http://localhost:5000/api/tasks', taskData, {
+            const token = localStorage.getItem('auth-token');
+            await axios.post('http://localhost:5000/api/tasks', taskData, {
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': token, // Pass the token in the headers
+                    'auth-token': token,
                 },
             });
             
-            setSuccess('Task added successfully!');
-            onClose(); // Close the modal after a successful save
-            window.location.reload();
+            toast.success('Task added successfully!');
+            // Delay the reload to allow the toast to display
+            setTimeout(() => {
+                onClose(); 
+                window.location.reload();
+            }, 3000); // Adjust delay time as needed
         } catch (err) {
-            setError('Failed to add the task. Please try again.');
+            const errorMsg = 'Failed to add the task. Please try again.';
+            setError(errorMsg);
+            toast.error(errorMsg); // Show error toast
             console.error(err);
         }
     };
 
     const handleCancel = () => {
-        // Close the modal and reload the page when cancel is clicked
         onClose();
         window.location.reload();
     };
 
-    // Count how many tasks are checked
     const checkedTasks = checklist.filter(item => item.checked).length;
     const totalTasks = checklist.length;
 
@@ -78,6 +92,8 @@ const AddTaskModal = ({ isOpen, onClose }) => {
 
     return (
         <div className="modal-overlay">
+            {/* Ensure ToastContainer is rendered in your App.js or here */}
+            <ToastContainer />
             <div className="modal-content">
                 <label className="input-label">Title</label>
                 <input
@@ -112,7 +128,6 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                     </div>
                 </div>
 
-                {/* Display checklist progress */}
                 <label className="input-label">Checklist ({checkedTasks}/{totalTasks})</label>
                 <div className="checklist-container">
                     {checklist.map((item, index) => (
@@ -120,7 +135,6 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                             <input
                                 type="checkbox"
                                 className="checklist-checkbox"
-                                aria-label={`Checklist checkbox ${index}`}
                                 checked={item.checked}
                                 onChange={() => handleCheckboxChange(index)}
                             />
@@ -148,15 +162,15 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                 </button>
 
                 <div className="footer">
-                <input
+                    <input
                         type="text"
                         className="edit-date-input"
                         onFocus={(e) => {
                             e.target.type = 'date';
-                            e.target.showPicker();  // Trigger the date picker manually
+                            e.target.showPicker();
                         }}
                         onBlur={(e) => {
-                            if (!e.target.value) e.target.type = 'text'; // Reset to 'text' if no date selected
+                            if (!e.target.value) e.target.type = 'text';
                         }}
                         value={dueDate}
                         onChange={(e) => setDueDate(e.target.value)}
@@ -171,10 +185,6 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                         </button>
                     </div>
                 </div>
-
-                {/* Show error or success messages */}
-                {error && <p className="error-message">{error}</p>}
-                {success && <p className="success-message">{success}</p>}
             </div>
         </div>
     );

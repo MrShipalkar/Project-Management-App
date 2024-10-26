@@ -3,6 +3,8 @@ import './EditTaskModal.css';
 import axios from 'axios';
 import Delete from '../../assets/Delete.png';
 import Plus from '../../assets/plus.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const EditTaskModal = ({ isOpen, onClose, taskId }) => {
     const [title, setTitle] = useState('');
@@ -27,6 +29,8 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
     const fetchTaskDetails = async () => {
         try {
             const token = localStorage.getItem('auth-token');
+            if (!token) throw new Error("No auth token found");
+
             const res = await axios.get(`http://localhost:5000/api/tasks/${taskId}`, {
                 headers: { 'auth-token': token },
             });
@@ -36,11 +40,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             setTitle(task.title);
             setPriority(task.priority);
             setChecklist(task.checklist);
-
-            // Format due date to dd/mm/yyyy format
-            const formattedDueDate = task.dueDate ? formatDate(task.dueDate) : '';
-            setDueDate(formattedDueDate);
-
+            setDueDate(task.dueDate ? formatToDMY(task.dueDate) : '');
             setAssignTo(task.assignedTo?._id || '');
             setSelectedUser(task.assignedTo?.email || '');
             setIsCreator(isCreator);
@@ -61,14 +61,14 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
         }
     };
 
-    const formatDate = (dateStr) => {
+    const formatToDMY = (dateStr) => {
         const date = new Date(dateStr);
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
+        return !isNaN(date) ? `${day}/${month}/${year}` : '';
     };
-
+    
 
     const handleChecklistChange = (index, value) => {
         const newChecklist = [...checklist];
@@ -91,6 +91,10 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
         setChecklist(newChecklist);
     };
 
+    const formatToYMD = (dateStr) => {
+        const date = new Date(dateStr);
+        return !isNaN(date) ? date.toISOString().split('T')[0] : '';
+    };
     const handleSave = async () => {
         if (!title || !priority || !checklist) {
             setError('Please fill in all required fields.');
@@ -101,7 +105,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             title,
             priority,
             checklist,
-            dueDate,
+            dueDate: formatToYMD(dueDate),
             assignedTo: assignTo,
         };
 
@@ -115,10 +119,14 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             });
 
             setSuccess('Task updated successfully!');
-            onClose();
-            window.location.reload();
+            toast.success('Task updated successfully!');
+            setTimeout(() => {
+                onClose(); 
+                window.location.reload();
+            }, 3000); // Adjust delay time as needed
         } catch (err) {
             setError('Failed to update the task. Please try again.');
+            toast.error(err)
             console.error(err);
         }
     };
@@ -133,6 +141,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
 
     return (
         <div className="edit-modal-overlay">
+            <ToastContainer />
             <div className="edit-modal-content">
                 <label className="edit-input-label">Title</label>
                 <input
@@ -196,6 +205,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
                             <input
                                 type="checkbox"
                                 className="edit-checklist-checkbox"
+                                aria-label={`Checklist checkbox ${index}`}
                                 checked={item.checked}
                                 onChange={() => handleCheckboxChange(index)}
                             />

@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; 
-import AddTaskModal from '../addTaskModal/AddTaskModal'; 
+import axios from 'axios';
+import AddTaskModal from '../addTaskModal/addTaskModal.jsx';
 import './Board.css';
 import Collapse from '../../assets/collapse.png';
 import Add from '../../assets/add.png';
 import Addpeople from '../../assets/Addpeople.png';
 import Dropdown from '../../assets/down.png';
-import TaskCard from '../taskCard/TaskCard'; 
+import TaskCard from '../taskCard/TaskCard';
 import AddPeopleModal from '../addPeopleModal/AddPeopleModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Board = () => {
     const [userName, setUserName] = useState('');
     const [error, setError] = useState('');
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
-    const [selectedOption, setSelectedOption] = useState('This week'); 
-    const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('This week');
+    const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
     const [tasks, setTasks] = useState([]);
-    const [expandedChecklists, setExpandedChecklists] = useState({}); // Track which checklists are open
-    const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false); 
+    const [expandedChecklists, setExpandedChecklists] = useState({});
+    const [isAddPeopleModalOpen, setIsAddPeopleModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchUserName = async () => {
@@ -30,6 +32,7 @@ const Board = () => {
                 setUserName(res.data.name);
             } catch (error) {
                 setError('Error fetching user details');
+                toast.error('Error fetching user details');
             }
         };
         fetchUserName();
@@ -47,13 +50,14 @@ const Board = () => {
             } catch (error) {
                 console.error('Error fetching tasks:', error);
                 setError('Error fetching tasks');
+                toast.error('Error fetching tasks');
             }
         };
         fetchTasks();
     }, []);
 
     const handleStatusChange = (updatedTask) => {
-        setTasks(prevTasks => 
+        setTasks(prevTasks =>
             prevTasks.map(task => (task._id === updatedTask._id ? updatedTask : task))
         );
     };
@@ -69,12 +73,12 @@ const Board = () => {
     const handleToggleChecklist = (taskId) => {
         setExpandedChecklists(prev => ({
             ...prev,
-            [taskId]: !prev[taskId] // Toggle checklist for this task
+            [taskId]: !prev[taskId]
         }));
     };
 
     const handleAddPeopleClick = () => {
-        setIsAddPeopleModalOpen(true); // Open the AddPeopleModal
+        setIsAddPeopleModalOpen(true);
     };
 
 
@@ -83,39 +87,41 @@ const Board = () => {
             try {
                 const token = localStorage.getItem('auth-token');
                 if (!token) throw new Error('No token found');
-                
-                // Pass the selected filter option to the backend as a query parameter
+
                 const res = await axios.get(`http://localhost:5000/api/tasks/filter?filter=${selectedOption}`, {
                     headers: { 'auth-token': token },
                 });
-    
+
                 setTasks(res.data);
             } catch (error) {
                 console.error('Error fetching tasks:', error);
                 setError('Error fetching tasks');
+                toast.error('Error fetching tasks');
             }
         };
         fetchTasks();
-    }, [selectedOption]);  // Run this effect when `selectedOption` changes
-    
+    }, [selectedOption]);
+
     const formatDate = (date) => {
         const day = date.getDate();
         const month = date.toLocaleString('en-US', { month: 'short' });
         const year = date.getFullYear();
-    
+
         const suffix = day % 10 === 1 && day !== 11 ? 'st' :
-                       day % 10 === 2 && day !== 12 ? 'nd' :
-                       day % 10 === 3 && day !== 13 ? 'rd' : 'th';
-    
+            day % 10 === 2 && day !== 12 ? 'nd' :
+                day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+
         return `${day}${suffix} ${month}, ${year}`;
     };
 
+
     return (
         <div className="board-container">
+             <ToastContainer />
             <header className="board-header">
-    <div><h2>Welcome! {userName || 'User'} </h2></div>
-    <div><p>{formatDate(new Date())}</p></div>
-</header>
+                <div><h2>Welcome! {userName || 'User'} </h2></div>
+                <div><p>{formatDate(new Date())}</p></div>
+            </header>
 
             {error && <p className="error-message">{error}</p>}
 
@@ -160,8 +166,8 @@ const Board = () => {
                             onStatusChange={handleStatusChange}
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
-                            onDeleteTask={handleDeleteTask} 
-                            assignedTo={task.assignedTo} 
+                            onDeleteTask={handleDeleteTask}
+                            assignedTo={task.assignedTo}
 
                         />
                     ))}
@@ -191,8 +197,8 @@ const Board = () => {
                             onStatusChange={handleStatusChange}
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
-                            onDeleteTask={handleDeleteTask} 
-                            assignedTo={task.assignedTo} 
+                            onDeleteTask={handleDeleteTask}
+                            assignedTo={task.assignedTo}
 
                         />
                     ))}
@@ -217,8 +223,8 @@ const Board = () => {
                             onStatusChange={handleStatusChange}
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
-                            onDeleteTask={handleDeleteTask} 
-                            assignedTo={task.assignedTo} 
+                            onDeleteTask={handleDeleteTask}
+                            assignedTo={task.assignedTo}
 
                         />
                     ))}
@@ -244,13 +250,13 @@ const Board = () => {
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask}
-                            assignedTo={task.assignedTo} 
+                            assignedTo={task.assignedTo}
                         />
                     ))}
                 </div>
             </div>
-              {/* AddPeopleModal Component */}
-              <AddPeopleModal
+            {/* AddPeopleModal Component */}
+            <AddPeopleModal
                 isOpen={isAddPeopleModalOpen}
                 onClose={() => setIsAddPeopleModalOpen(false)}
             />

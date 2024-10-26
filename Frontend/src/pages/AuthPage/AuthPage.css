@@ -68,6 +68,7 @@
   margin-bottom: 15px;
   width: 100%;
   position: relative;
+  margin-bottom: 30px; /* Space for potential error messages */
 }
 
 /* Input styling */
@@ -83,14 +84,7 @@
 }
 
 /* Error message styling inside inputs */
-.input-error {
-  color: red;
-  font-size: 0.8rem;
-  margin-top: 3px; /* Adjusted margin */
-  width: 100%;
-  position: absolute;
-  bottom: -25px; /* Moves the error message slightly closer to the input */
-}
+
 
 /* Icons inside input fields */
 .icon-input {
@@ -168,10 +162,26 @@
 .form-group .input-error {
   margin-top: 5px;
 }
-.inpt-error{
-  color: red;
-  font-size: 0.8rem;
-  width: 100%;
+.input-error {
   position: absolute;
-  bottom:40% ; 
+  bottom: -20px;
+  left: 0;
+  font-size: 12px;
+  color: red;
+  height: 16px; /* Fixed height to prevent layout shifting */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.input-error.visible {
+  visibility: visible;
+  opacity: 1;
+}
+.general-error {
+  text-align: left;
+  color: red;
+  font-size: 12px;
+  margin-top: 10px; /* Space from the button */
+  min-height: 16px; /* Ensure space remains even if no error */
 }

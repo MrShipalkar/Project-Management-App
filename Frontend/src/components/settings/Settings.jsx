@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // For making API requests
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './Settings.css';
 import View from '../../assets/view.png';
 import Hide from '../../assets/hide.png';
 import Profile from '../../assets/Profile.png';
 import Mail from '../../assets/mail.png';
 import Lock from '../../assets/lock.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Settings = () => {
   const [userInfo, setUserInfo] = useState({
@@ -23,26 +25,19 @@ const Settings = () => {
 
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate(); // Initialize useNavigate for redirection
+  const navigate = useNavigate();
 
-  // Fetch the user data on component mount
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const token = localStorage.getItem('auth-token'); // Get token from localStorage
-  
-        if (!token) {
-          throw new Error('No token available');
-        }
-  
+        const token = localStorage.getItem('auth-token');
+
+        if (!token) throw new Error('No token available');
+
         const res = await axios.get('http://localhost:5000/api/users/profile', {
-          headers: {
-            'auth-token': token,  // Attach the token to the headers
-          },
+          headers: { 'auth-token': token },
         });
-  
+
         setUserInfo({
           name: res.data.name,
           email: res.data.email,
@@ -55,43 +50,33 @@ const Settings = () => {
           email: res.data.email,
         });
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        toast.error('Error fetching user details.');
+        console.error(error);
       }
     };
-  
+
     fetchUserDetails();
   }, []);
-  
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserInfo({
-      ...userInfo,
-      [name]: value,
-    });
+    setUserInfo({ ...userInfo, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
 
     const updates = {};
 
-    // Check which fields have been modified, and only include those in the updates object
-    if (userInfo.name !== originalUserInfo.name) {
-      updates.name = userInfo.name;
-    }
-    if (userInfo.email !== originalUserInfo.email) {
-      updates.email = userInfo.email;
-    }
+    if (userInfo.name !== originalUserInfo.name) updates.name = userInfo.name;
+    if (userInfo.email !== originalUserInfo.email) updates.email = userInfo.email;
     if (userInfo.oldPassword && userInfo.newPassword) {
       updates.oldPassword = userInfo.oldPassword;
       updates.newPassword = userInfo.newPassword;
     }
 
-    // If no fields were modified, return early
     if (Object.keys(updates).length === 0) {
-      setError('No changes detected.');
+      toast.error('No changes detected.');
       return;
     }
 
@@ -99,49 +84,39 @@ const Settings = () => {
       const token = localStorage.getItem('auth-token');
 
       if (!token) {
-        setError('No token found. Please log in again.');
+        toast.error('No token found. Please log in again.');
         return;
       }
 
-      // Make an API request to update the user's profile
       const res = await axios.put(
         'http://localhost:5000/api/users/update',
         updates,
         {
-          headers: {
-            'auth-token': token, // Use 'auth-token' in the headers
-          },
+          headers: { 'auth-token': token },
         }
       );
 
-      // If the email or password is updated, log the user out and redirect them to the home page
       if (updates.email || (updates.oldPassword && updates.newPassword)) {
-        localStorage.removeItem('auth-token'); // Remove token
-        setSuccess('Profile updated successfully! You will be logged out.');
-        
-        // Redirect to the homepage after a short delay
+        localStorage.removeItem('auth-token');
+        toast.success('Profile updated successfully! You will be logged out.');
         setTimeout(() => {
-          navigate('/'); // Redirect to the home page
-        }, 1500); // Redirect after 1.5 seconds
+          navigate('/');
+        }, 1500);
       } else {
-        setSuccess('Profile updated successfully!');
+        toast.success('Profile updated successfully!');
       }
-      
+
     } catch (err) {
-      if (err.response && err.response.data) {
-        setError(err.response.data.message || 'Something went wrong.');
-      } else {
-        setError('Network error. Please try again.');
-      }
+      const errorMsg = err.response?.data?.message || 'Something went wrong.';
+      toast.error(errorMsg);
+      console.error(err);
     }
   };
 
   return (
     <div className="settings-form-container">
+      <ToastContainer />
       <h2>Settings</h2>
-
-      {error && <p className="error-message">{error}</p>}
-      {success && <p className="success-message">{success}</p>}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -149,7 +124,7 @@ const Settings = () => {
           <input
             type="text"
             name="name"
-            value={userInfo.name} // Pre-filled with fetched name
+            value={userInfo.name}
             onChange={handleInputChange}
             placeholder="Name"
           />
@@ -160,7 +135,7 @@ const Settings = () => {
           <input
             type="email"
             name="email"
-            value={userInfo.email} // Pre-filled with fetched email
+            value={userInfo.email}
             onChange={handleInputChange}
             placeholder="Update Email"
           />

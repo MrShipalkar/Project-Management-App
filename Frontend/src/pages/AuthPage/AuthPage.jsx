@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import './AuthPage.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Form from '../../assets/Form.png';
 import Profile from '../../assets/Profile.png';
 import Mail from '../../assets/mail.png';
@@ -17,7 +19,7 @@ const AuthPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error, setError] = useState({}); // Error state as an object to track multiple field errors
+  const [error, setError] = useState({});
   const navigate = useNavigate();
 
   const toggleForm = () => {
@@ -28,42 +30,37 @@ const AuthPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError({});
-  
-    // Validate passwords when registering
+
     if (!isLogin && password !== confirmPassword) {
       setError({ confirmPassword: 'Passwords do not match.' });
       return;
     }
-  
+
     try {
       if (isLogin) {
-        // Login logic
         const res = await axios.post('http://localhost:5000/api/users/login', {
           email,
           password,
         });
-  
-        // Assuming your backend sends the username in the 'user' object like the register endpoint
+
         const { token, user } = res.data;
-  
-        // Store only the username in localStorage
-        localStorage.setItem('auth-token', res.data.token);
+        localStorage.setItem('auth-token', token);
         localStorage.setItem('user-name', user.username);
-  
-        // Navigate to the dashboard or board page
-        navigate('/dashboard/board');
+
+        toast.success('Login successful!');
+
+        setTimeout(() => navigate('/dashboard/board'), 1500); // Navigate after a slight delay
       } else {
-        // Register logic
-        const res = await axios.post('http://localhost:5000/api/users/register', {
+        await axios.post('http://localhost:5000/api/users/register', {
           name,
           email,
           password,
         });
         setIsLogin(true);
+        toast.success('Registration successful! Please log in.');
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        // Show error under email input for user already exists, otherwise show general error
         if (error.response.data.message === 'User already exists') {
           setError({ email: error.response.data.message });
         } else {
@@ -74,10 +71,10 @@ const AuthPage = () => {
       }
     }
   };
-  
 
   return (
     <div className="auth-container">
+      <ToastContainer />
       <div className="auth-left">
         <div className="auth-welcome">
           <img src={Form} alt="Form Illustration" />
@@ -99,7 +96,7 @@ const AuthPage = () => {
                 onChange={(e) => setName(e.target.value)}
                 required
               />
-              {error.name && <p className="input-error">{error.name}</p>}
+              <p className={`input-error ${error.name ? 'visible' : ''}`}>{error.name || ''}</p>
             </div>
           )}
           <div className="form-group icon-input">
@@ -111,7 +108,7 @@ const AuthPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            {error.email && <p className="input-error">{error.email}</p>}
+            <p className={`input-error ${error.email ? 'visible' : ''}`}>{error.email || ''}</p>
           </div>
           <div className="form-group icon-input">
             <img src={Lock} alt="Lock Icon" className="input-icon" />
@@ -128,7 +125,7 @@ const AuthPage = () => {
               className="toggle-password-icon"
               onClick={() => setShowPassword(!showPassword)}
             />
-            {error.password && <p className="input-error">{error.password}</p>}
+            <p className={`input-error ${error.password ? 'visible' : ''}`}>{error.password || ''}</p>
           </div>
           {!isLogin && (
             <div className="form-group icon-input">
@@ -146,14 +143,15 @@ const AuthPage = () => {
                 className="toggle-password-icon"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
               />
-              {error.confirmPassword && <p className="input-error">{error.confirmPassword}</p>}
+              <p className={`input-error ${error.confirmPassword ? 'visible' : ''}`}>{error.confirmPassword || ''}</p>
             </div>
           )}
           <button type="submit" className="btn-auth">
             {isLogin ? 'Log in' : 'Register'}
           </button>
 
-          {error.general && <p className="inpt-error">{error.general}</p>}
+          {/* General Error Message */}
+          <p className={`general-error ${error.general ? 'visible' : ''}`}>{error.general || ''}</p>
 
           <p className="toggle-link">
             {isLogin ? "Don't have an account?" : 'Have an account?'}

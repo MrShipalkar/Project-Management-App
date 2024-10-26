@@ -6,22 +6,25 @@ import Board from '../../assets/board.png';
 import Analytics from '../../assets/analytics.png';
 import Settings from '../../assets/settings.png';
 import Logout from '../../assets/Logout.png';
-import LogoutConfirmationModal from '../logoutModal/LogoutModal'; // Import the logout modal
+import LogoutConfirmationModal from '../logoutModal/LogoutModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Sidebar = () => {
-  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); // State to control logout modal
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false); 
   const navigate = useNavigate(); 
 
-  // Function to handle actual logout
   const handleConfirmLogout = () => {
     localStorage.removeItem('auth-token'); 
     localStorage.removeItem('user-name');
-    setIsLogoutModalOpen(false); // Close the modal
-    navigate('/'); 
+    setIsLogoutModalOpen(false); 
+    toast.success('Logged out successfully!'); // Show logout success message
+    setTimeout(() => navigate('/'), 1500); // Delay navigation to allow toast to show
   };
 
   return (
     <div className="sidebar">
+      <ToastContainer />
       <div className="sidebar-header">
         <img src={Logo} alt="" />
         <h3>Pro Manage</h3>

@@ -5,6 +5,8 @@ import DropdownIcon from '../../assets/dropdown.png';
 import axios from 'axios';
 import DeleteConfirmationModal from '../deleteModal/DeleteModal';
 import EditTaskModal from '../editTaskModal/EditTaskModal';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isChecklistOpen, onToggleChecklist, onDeleteTask, assignedTo }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -12,7 +14,7 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [shareMessage, setShareMessage] = useState('');
     const [assignedUserInitials, setAssignedUserInitials] = useState(null);
-    const dropdownRef = useRef(null); // Ref for the dropdown
+    const dropdownRef = useRef(null);
 
     useEffect(() => {
         if (assignedTo && typeof assignedTo === 'string') {
@@ -28,7 +30,6 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         setIsDropdownOpen(prev => !prev);
     };
 
-    // Close dropdown on click outside
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -37,10 +38,10 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         };
         if (isDropdownOpen) {
             document.addEventListener('mousedown', handleClickOutside);
-        } else {
-            document.removeEventListener('mousedown', handleClickOutside);
         }
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, [isDropdownOpen]);
 
     const handleEdit = () => {
@@ -55,10 +56,13 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                 headers: { 'auth-token': token },
             });
             onStatusChange(res.data);
+            toast.success(`Task status updated to ${newStatus}!`);
         } catch (error) {
+            toast.error("Error updating status. Please try again.");
             console.error("Error updating status:", error);
         }
     };
+    
 
     const handleDelete = async () => {
         try {
@@ -67,9 +71,21 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                 headers: { 'auth-token': token },
             });
             onDeleteTask(taskId);
+            toast.success("Task deleted successfully!");
         } catch (error) {
+            toast.error("Error deleting task. Please try again.");
             console.error("Error deleting task:", error);
         }
+    };
+
+    const handleShare = () => {
+        const shareableLink = `${window.location.origin}/task/${taskId}`;
+        navigator.clipboard.writeText(shareableLink).then(() => {
+            toast.success("Link copied to clipboard!");
+            setTimeout(() => setShareMessage(''), 3000);
+        }).catch(() => {
+            toast.error("Failed to copy link. Please try again.");
+        });
     };
 
     const formatDueDate = (dateStr) => {
@@ -96,16 +112,6 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         const isOverdue = dueDate && new Date(dueDate) < new Date();
         if (column === 'done') return 'due-date-green';
         return isOverdue ? 'due-date-red' : 'due-date-gray';
-    }
-
-    const handleShare = () => {
-        const shareableLink = `${window.location.origin}/task/${taskId}`;
-        navigator.clipboard.writeText(shareableLink).then(() => {
-            setShareMessage('Link copied to clipboard!');
-            setTimeout(() => setShareMessage(''), 3000); // Clear message after 3 seconds
-        }).catch(() => {
-            setShareMessage('Failed to copy link. Please try again.');
-        });
     };
 
     return (
@@ -121,6 +127,7 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                         </span>
                     )}
                 </div>
+                <div className='more-sec'>
                 <div className="more-options" ref={dropdownRef}>
                     <img src={More} alt="More options" onClick={toggleDropdown} />
                     {isDropdownOpen && (
@@ -131,6 +138,8 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                         </ul>
                     )}
                 </div>
+                </div>
+                
             </div>
 
             <h4 className="task-title" title={title}>

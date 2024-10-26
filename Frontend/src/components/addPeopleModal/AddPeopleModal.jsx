@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './AddPeopleModal.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddPeopleModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
@@ -17,19 +19,20 @@ const AddPeopleModal = ({ isOpen, onClose }) => {
                 headers: { 'auth-token': token },
             });
     
-            // Set success message
+            // Show success toast
+            toast.success(`${email} added to board`);
             setSuccessMessage(`${email} added to board`);
         } catch (error) {
             console.error('Error assigning tasks:', error);
-            setErrorMessage('user not found with this email');
+            toast.error('User not found with this email')
         }
     };
 
-    // Function to reset modal data
     const resetModal = () => {
         setEmail('');
         setSuccessMessage('');
         setErrorMessage('');
+        window.location.reload();
     };
 
     const handleOkayClick = () => {

@@ -81,9 +81,7 @@
 .error-message {
     color: #e74c3c; /* Red color to indicate error */
     padding: 10px; /* Padding around the message */
-    border-radius: 5px; /* Slight rounding of the corners */
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 10px;
     margin-bottom: 20px; /* Space between the error message and other elements */
     text-align: left; /* Left-align the text */
     position:absolute;
