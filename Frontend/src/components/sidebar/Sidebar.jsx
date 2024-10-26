@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom'; 
 import './Sidebar.css';
-import Logo from '../../assets/Logo.png';
+import Logo from '../../assets/logo.png';
 import Board from '../../assets/board.png';
 import Analytics from '../../assets/analytics.png';
 import Settings from '../../assets/settings.png';
