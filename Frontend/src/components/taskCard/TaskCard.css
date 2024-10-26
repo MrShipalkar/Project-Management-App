@@ -54,12 +54,13 @@
     font-size: 18px;
     font-weight: 500;
     text-align: left;
-    position: relative;
+    /* position: relative; */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 300px; /* Adjust this based on your layout */
     cursor: pointer;
+    
 }
 /* Tooltip styling */
 .tooltip-text {
@@ -224,20 +225,19 @@
 }
 
 .more-options {
-    position: relative;
+    /* position: relative; */
     display: inline-block;
 }
 
 .dropdown-options {
     position: absolute;
-    right: 0;
-    top: 10px;
     background-color: white;
     border-radius: 12px;
     list-style: none;
     padding: 5px 0;
-    width: 100px;
+    width: 120px;
     z-index: 10;
+    transform: translateX(-80%);
     box-shadow: 0px 2px 22px 0px #7E7A7A40;
 }
 

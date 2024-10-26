@@ -148,15 +148,20 @@ const AddTaskModal = ({ isOpen, onClose }) => {
                 </button>
 
                 <div className="footer">
-                    <input
-                        type="date"
-                        className="Date-input"
+                <input
+                        type="text"
+                        className="edit-date-input"
+                        onFocus={(e) => {
+                            e.target.type = 'date';
+                            e.target.showPicker();  // Trigger the date picker manually
+                        }}
+                        onBlur={(e) => {
+                            if (!e.target.value) e.target.type = 'text'; // Reset to 'text' if no date selected
+                        }}
                         value={dueDate}
                         onChange={(e) => setDueDate(e.target.value)}
-                        onClick={(e) => e.target.showPicker()}  // Explicitly trigger the date picker when clicked
-                        placeholder="Select"
+                        placeholder="Select Due Date"
                     />
-
                     <div className="modal-actions">
                         <button type="button" className="cancel-btn" onClick={handleCancel}>
                             Cancel

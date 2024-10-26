@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './EditTaskModal.css'; // Importing a new CSS file
+import './EditTaskModal.css';
 import axios from 'axios';
 import Delete from '../../assets/Delete.png';
 import Plus from '../../assets/plus.png';
@@ -9,18 +9,18 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
     const [priority, setPriority] = useState('');
     const [checklist, setChecklist] = useState([{ text: '', checked: false }]);
     const [dueDate, setDueDate] = useState('');
-    const [assignTo, setAssignTo] = useState(''); // Assigned user's ID
-    const [selectedUser, setSelectedUser] = useState(''); // Assigned user's email
-    const [users, setUsers] = useState([]); // Store fetched users
-    const [showDropdown, setShowDropdown] = useState(false); // Control dropdown visibility
-    const [isCreator, setIsCreator] = useState(false); // Flag to check if current user is the creator
+    const [assignTo, setAssignTo] = useState('');
+    const [selectedUser, setSelectedUser] = useState('');
+    const [users, setUsers] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [isCreator, setIsCreator] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
     useEffect(() => {
         if (isOpen && taskId) {
-            fetchTaskDetails(); // Fetch task details when the modal opens
-            fetchUsers(); // Fetch users for the dropdown
+            fetchTaskDetails();
+            fetchUsers();
         }
     }, [isOpen, taskId]);
 
@@ -32,13 +32,18 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             });
 
             const { task, isCreator } = res.data;
+
             setTitle(task.title);
             setPriority(task.priority);
             setChecklist(task.checklist);
-            setDueDate(task.dueDate);
-            setAssignTo(task.assignedTo?._id || ''); // Pre-populate assigned user's ID
-            setSelectedUser(task.assignedTo?.email || ''); // Pre-populate assigned user's email
-            setIsCreator(isCreator); // Set creator flag
+
+            // Format due date to dd/mm/yyyy format
+            const formattedDueDate = task.dueDate ? formatDate(task.dueDate) : '';
+            setDueDate(formattedDueDate);
+
+            setAssignTo(task.assignedTo?._id || '');
+            setSelectedUser(task.assignedTo?.email || '');
+            setIsCreator(isCreator);
         } catch (err) {
             console.error('Failed to fetch task details:', err);
         }
@@ -50,11 +55,20 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             const res = await axios.get('http://localhost:5000/api/users/getusers', {
                 headers: { 'auth-token': token },
             });
-            setUsers(res.data); // Assuming res.data is an array of users
+            setUsers(res.data);
         } catch (err) {
             console.error('Failed to fetch users:', err);
         }
     };
+
+    const formatDate = (dateStr) => {
+        const date = new Date(dateStr);
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    };
+
 
     const handleChecklistChange = (index, value) => {
         const newChecklist = [...checklist];
@@ -88,7 +102,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             priority,
             checklist,
             dueDate,
-            assignedTo: assignTo, // Send the selected user's ID
+            assignedTo: assignTo,
         };
 
         try {
@@ -110,9 +124,9 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
     };
 
     const handleAssignToSelect = (user) => {
-        setAssignTo(user._id); // Set user ID to be assigned
-        setSelectedUser(user.email); // Display user's email in the input field
-        setShowDropdown(false); // Close the dropdown after selection
+        setAssignTo(user._id);
+        setSelectedUser(user.email);
+        setShowDropdown(false);
     };
 
     if (!isOpen) return null;
@@ -159,8 +173,8 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
                         type="text"
                         className="edit-modal-input"
                         value={selectedUser}
-                        onClick={() => isCreator && setShowDropdown(!showDropdown)} // Only allow the creator to open the dropdown
-                        readOnly={!isCreator} // Make input non-editable if the user is not the creator
+                        onClick={() => isCreator && setShowDropdown(!showDropdown)}
+                        readOnly={!isCreator}
                         placeholder="Select a user"
                     />
                     {showDropdown && (
@@ -182,7 +196,6 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
                             <input
                                 type="checkbox"
                                 className="edit-checklist-checkbox"
-                                aria-label={`Checklist checkbox ${index}`}
                                 checked={item.checked}
                                 onChange={() => handleCheckboxChange(index)}
                             />
@@ -211,12 +224,18 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
 
                 <div className="edit-footer">
                     <input
-                        type="date"
+                        type="text"
                         className="edit-date-input"
+                        onFocus={(e) => {
+                            e.target.type = 'date';
+                            e.target.showPicker();
+                        }}
+                        onBlur={(e) => {
+                            if (!e.target.value) e.target.type = 'text';
+                        }}
                         value={dueDate}
                         onChange={(e) => setDueDate(e.target.value)}
-                        onClick={(e) => e.target.showPicker()}
-                        placeholder="Select"
+                        placeholder="Select Due Date"
                     />
 
                     <div className="edit-modal-actions">

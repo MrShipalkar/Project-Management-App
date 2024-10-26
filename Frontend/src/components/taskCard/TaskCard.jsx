@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './TaskCard.css';
 import More from '../../assets/more.png';
 import DropdownIcon from '../../assets/dropdown.png';
@@ -12,20 +12,36 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [shareMessage, setShareMessage] = useState('');
     const [assignedUserInitials, setAssignedUserInitials] = useState(null);
+    const dropdownRef = useRef(null); // Ref for the dropdown
 
     useEffect(() => {
         if (assignedTo && typeof assignedTo === 'string') {
-            // Check if assignedTo is a string and split it to get initials
             const initials = assignedTo.split(' ').map(word => word[0]).join('').toUpperCase();
             setAssignedUserInitials(initials);
         } else if (assignedTo && typeof assignedTo === 'object' && assignedTo.name) {
-            // If assignedTo is an object with a name property, extract initials from name
             const initials = assignedTo.name.split(' ').map(word => word[0]).join('').toUpperCase();
             setAssignedUserInitials(initials);
         }
     }, [assignedTo]);
 
-    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+    const toggleDropdown = () => {
+        setIsDropdownOpen(prev => !prev);
+    };
+
+    // Close dropdown on click outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+        if (isDropdownOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [isDropdownOpen]);
 
     const handleEdit = () => {
         setIsEditModalOpen(true);
@@ -80,6 +96,16 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
         const isOverdue = dueDate && new Date(dueDate) < new Date();
         if (column === 'done') return 'due-date-green';
         return isOverdue ? 'due-date-red' : 'due-date-gray';
+    }
+
+    const handleShare = () => {
+        const shareableLink = `${window.location.origin}/task/${taskId}`;
+        navigator.clipboard.writeText(shareableLink).then(() => {
+            setShareMessage('Link copied to clipboard!');
+            setTimeout(() => setShareMessage(''), 3000); // Clear message after 3 seconds
+        }).catch(() => {
+            setShareMessage('Failed to copy link. Please try again.');
+        });
     };
 
     return (
@@ -89,19 +115,18 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                     <span className={`priority-bullet ${getPriorityClass()}`}></span>
                     {priority.toUpperCase()} PRIORITY
 
-                    {/* Display Avatar with Assigned User's Initials */}
                     {assignedUserInitials && (
                         <span className="assigned-avatar">
                             {assignedUserInitials}
                         </span>
                     )}
                 </div>
-                <div className="more-options">
+                <div className="more-options" ref={dropdownRef}>
                     <img src={More} alt="More options" onClick={toggleDropdown} />
                     {isDropdownOpen && (
                         <ul className="dropdown-options">
                             <li onClick={handleEdit}>Edit</li>
-                            <li onClick={() => setShareMessage('Link copied to clipboard!')}>Share</li>
+                            <li onClick={handleShare}>Share</li>
                             <li onClick={() => { setIsDeleteModalOpen(true); setIsDropdownOpen(false); }}>Delete</li>
                         </ul>
                     )}
