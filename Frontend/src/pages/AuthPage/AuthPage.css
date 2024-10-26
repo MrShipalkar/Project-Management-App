@@ -30,13 +30,11 @@
   font-weight: 600;
   font-size: 40px;
   margin-bottom: 10px;
-  font-family: Open Sans;
   font-weight: 400;
   line-height: 38.59px;
 }
 
 .auth-welcome p {
-  font-family: Open Sans;
   font-size: 19.29px;
   font-weight: 400;
   line-height: 38.59px;
@@ -56,7 +54,6 @@
 }
 
 .auth-right h2 {
-  font-family: Open Sans;
   font-size: 33.08px;
   font-weight: 600;
   text-align: left;
