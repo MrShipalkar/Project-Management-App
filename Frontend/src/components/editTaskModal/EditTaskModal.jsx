@@ -5,6 +5,7 @@ import Delete from '../../assets/Delete.png';
 import Plus from '../../assets/plus.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_URL from '../../services/config'
 
 const EditTaskModal = ({ isOpen, onClose, taskId }) => {
     const [title, setTitle] = useState('');
@@ -31,7 +32,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             const token = localStorage.getItem('auth-token');
             if (!token) throw new Error("No auth token found");
 
-            const res = await axios.get(`http://localhost:5000/api/tasks/${taskId}`, {
+            const res = await axios.get(`${API_URL}/api/tasks/${taskId}`, {
                 headers: { 'auth-token': token },
             });
 
@@ -52,7 +53,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('auth-token');
-            const res = await axios.get('http://localhost:5000/api/users/getusers', {
+            const res = await axios.get(`${API_URL}/api/users/getusers`, {
                 headers: { 'auth-token': token },
             });
             setUsers(res.data);
@@ -111,7 +112,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
 
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.put(`http://localhost:5000/api/tasks/${taskId}`, taskData, {
+            await axios.put(`${API_URL}/api/tasks/${taskId}`, taskData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'auth-token': token,

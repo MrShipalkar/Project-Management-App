@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    z-index: 1000;
 }
 
 .logout-modal-content {
@@ -39,9 +39,9 @@
     color: white;
     cursor: pointer;
     width: Fixed (300px)px;
-height: 45px;
-gap: 10px;
-border-radius: 12px;
+    height: 45px;
+    gap: 10px;
+    border-radius: 12px;
 }
 
 .logout-cancel-btn {
@@ -49,8 +49,8 @@ border-radius: 12px;
     color: #CF3636;
     cursor: pointer;
     width: Fixed (300px)px;
-height: 45px;
-gap: 10px;
-border-radius: 12px;
-border: 1px solid #CF3636;
+    height: 45px;
+    gap: 10px;
+    border-radius: 12px;
+    border: 1px solid #CF3636;
 }

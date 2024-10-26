@@ -7,6 +7,7 @@ import DeleteConfirmationModal from '../deleteModal/DeleteModal';
 import EditTaskModal from '../editTaskModal/EditTaskModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_URL from '../../services/config'
 
 const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isChecklistOpen, onToggleChecklist, onDeleteTask, assignedTo }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -52,7 +53,7 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
     const handleStatusChange = async (newStatus) => {
         try {
             const token = localStorage.getItem('auth-token');
-            const res = await axios.put(`http://localhost:5000/api/tasks/${taskId}`, { status: newStatus }, {
+            const res = await axios.put(`${API_URL}/api/tasks/${taskId}`, { status: newStatus }, {
                 headers: { 'auth-token': token },
             });
             onStatusChange(res.data);
@@ -67,7 +68,7 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
     const handleDelete = async () => {
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.delete(`http://localhost:5000/api/tasks/${taskId}`, {
+            await axios.delete(`${API_URL}/api/tasks/${taskId}`, {
                 headers: { 'auth-token': token },
             });
             onDeleteTask(taskId);

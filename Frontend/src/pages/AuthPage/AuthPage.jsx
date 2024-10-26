@@ -10,6 +10,8 @@ import Mail from '../../assets/mail.png';
 import Lock from '../../assets/lock.png';
 import View from '../../assets/view.png';
 import Hide from '../../assets/hide.png';
+import API_URL from '../../services/config'
+
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -38,7 +40,7 @@ const AuthPage = () => {
 
     try {
       if (isLogin) {
-        const res = await axios.post('http://localhost:5000/api/users/login', {
+        const res = await axios.post(`${API_URL}/api/users/login`, {
           email,
           password,
         });
@@ -51,7 +53,7 @@ const AuthPage = () => {
 
         setTimeout(() => navigate('/dashboard/board'), 1500); 
       } else {
-        await axios.post('http://localhost:5000/api/users/register', {
+        await axios.post(`${API_URL}/api/users/register`, {
           name,
           email,
           password,

@@ -4,6 +4,7 @@ import './AddPeopleModal.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 import API_URL from '../../services/config'
 
 const AddPeopleModal = ({ isOpen, onClose }) => {

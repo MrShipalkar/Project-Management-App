@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Delete from '../../assets/Delete.png';
 import Plus from '../../assets/plus.png';
+import API_URL from '../../services/config'
 
 const AddTaskModal = ({ isOpen, onClose }) => {
     const [title, setTitle] = useState('');
@@ -59,7 +60,7 @@ const AddTaskModal = ({ isOpen, onClose }) => {
 
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.post('http://localhost:5000/api/tasks', taskData, {
+            await axios.post(`${API_URL}/api/tasks`, taskData, {
                 headers: {
                     'Content-Type': 'application/json',
                     'auth-token': token,

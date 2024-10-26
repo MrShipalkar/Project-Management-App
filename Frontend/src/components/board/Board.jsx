@@ -10,7 +10,7 @@ import TaskCard from '../taskCard/TaskCard';
 import AddPeopleModal from '../addPeopleModal/AddPeopleModal';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import API_URL from '../../services/config.js';
 
 const Board = () => {
     const [userName, setUserName] = useState('');
@@ -27,7 +27,7 @@ const Board = () => {
             try {
                 const token = localStorage.getItem('auth-token');
                 if (!token) throw new Error('No token available');
-                const res = await axios.get('http://localhost:5000/api/users/profile', {
+                const res = await axios.get(`${API_URL}/api/users/profile`, {
                     headers: { 'auth-token': token },
                 });
                 setUserName(res.data.name);
@@ -44,7 +44,7 @@ const Board = () => {
             try {
                 const token = localStorage.getItem('auth-token');
                 if (!token) throw new Error('No token found');
-                const res = await axios.get('https://project-management-app-backend-8roi.onrender.com/api/tasks', {
+                const res = await axios.get(`${API_URL}/api/tasks`, {
                     headers: { 'auth-token': token },
                 });
                 setTasks(res.data);
@@ -89,7 +89,7 @@ const Board = () => {
                 const token = localStorage.getItem('auth-token');
                 if (!token) throw new Error('No token found');
 
-                const res = await axios.get(`http://localhost:5000/api/tasks/filter?filter=${selectedOption}`, {
+                const res = await axios.get(`${API_URL}/api/tasks/filter?filter=${selectedOption}`, {
                     headers: { 'auth-token': token },
                 });
 

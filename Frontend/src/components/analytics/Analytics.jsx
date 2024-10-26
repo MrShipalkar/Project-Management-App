@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Analytics.css'; 
+import API_URL from '../../services/config'
 
 const Analytics = () => {
   const [taskData, setTaskData] = useState({
@@ -19,7 +20,7 @@ const Analytics = () => {
     const fetchTasks = async () => {
       try {
         const token = localStorage.getItem('auth-token'); 
-        const res = await axios.get('http://localhost:5000/api/tasks/filter', {
+        const res = await axios.get(`${API_URL}/api/tasks/filter`, {
           headers: {
             'auth-token': token,
           },

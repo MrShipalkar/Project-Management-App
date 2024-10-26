@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './PublicTaskPage.css';
 import Logo from '../../assets/logo.png'; 
+import API_URL from '../../services/config'
+
 
 const PublicTaskPage = () => {
     const { taskId } = useParams();
@@ -12,7 +14,7 @@ const PublicTaskPage = () => {
     useEffect(() => {
         const fetchTask = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/tasks/task/${taskId}`);
+                const response = await axios.get(`${API_URL}/api/tasks/task/${taskId}`);
                 setTask(response.data);
             } catch (error) {
                 setErrorMessage('Failed to load task. Please try again later.');

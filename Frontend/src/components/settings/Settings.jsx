@@ -9,6 +9,7 @@ import Mail from '../../assets/mail.png';
 import Lock from '../../assets/lock.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_URL from '../../services/config'
 
 const Settings = () => {
   const [userInfo, setUserInfo] = useState({
@@ -34,7 +35,7 @@ const Settings = () => {
 
         if (!token) throw new Error('No token available');
 
-        const res = await axios.get('http://localhost:5000/api/users/profile', {
+        const res = await axios.get(`${API_URL}/api/users/profile`, {
           headers: { 'auth-token': token },
         });
 
@@ -89,7 +90,7 @@ const Settings = () => {
       }
 
       const res = await axios.put(
-        'http://localhost:5000/api/users/update',
+        `${API_URL}/api/users/update`,
         updates,
         {
           headers: { 'auth-token': token },
@@ -118,7 +119,7 @@ const Settings = () => {
       <h2>Settings</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="setting-form-group">
           <img src={Profile} alt="Profile Icon" className="input-icon" />
           <input
             type="text"
@@ -129,7 +130,7 @@ const Settings = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="setting-form-group">
           <img src={Mail} alt="Mail Icon" className="input-icon" />
           <input
             type="email"
@@ -140,7 +141,7 @@ const Settings = () => {
           />
         </div>
 
-        <div className="form-group">
+        <div className="setting-form-group">
           <div className="password-wrapper">
             <img src={Lock} alt="Lock Icon" className="input-icon" />
             <input
@@ -159,7 +160,7 @@ const Settings = () => {
           </div>
         </div>
 
-        <div className="form-group">
+        <div className="setting-form-group">
           <div className="password-wrapper">
             <img src={Lock} alt="Lock Icon" className="input-icon" />
             <input

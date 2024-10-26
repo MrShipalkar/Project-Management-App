@@ -1,5 +1,5 @@
 import React from 'react';
-import './LogoutModal.css'; 
+import './LogoutModal.css'; // Add CSS for the modal
 
 const LogoutConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;
