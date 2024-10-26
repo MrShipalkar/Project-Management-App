@@ -258,3 +258,17 @@
 .more-options img{
     cursor: pointer;
 }
+
+.assigned-avatar {
+    background-color: #E0E4E7;
+    color: #333;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 8px;
+}

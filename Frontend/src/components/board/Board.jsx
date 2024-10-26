@@ -149,6 +149,8 @@ const Board = () => {
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
+                            assignedTo={task.assignedTo} 
+
                         />
                     ))}
                 </div>
@@ -178,6 +180,8 @@ const Board = () => {
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
+                            assignedTo={task.assignedTo} 
+
                         />
                     ))}
                 </div>
@@ -202,6 +206,8 @@ const Board = () => {
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask} 
+                            assignedTo={task.assignedTo} 
+
                         />
                     ))}
                 </div>
@@ -225,7 +231,8 @@ const Board = () => {
                             onStatusChange={handleStatusChange}
                             isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
-                            onDeleteTask={handleDeleteTask} 
+                            onDeleteTask={handleDeleteTask}
+                            assignedTo={task.assignedTo} 
                         />
                     ))}
                 </div>

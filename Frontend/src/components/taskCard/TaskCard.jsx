@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TaskCard.css';
 import More from '../../assets/more.png';
 import DropdownIcon from '../../assets/dropdown.png';
@@ -6,15 +6,26 @@ import axios from 'axios';
 import DeleteConfirmationModal from '../deleteModal/DeleteModal';
 import EditTaskModal from '../editTaskModal/EditTaskModal';
 
-const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isChecklistOpen, onToggleChecklist, onDeleteTask }) => {
+const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, dueDate, isChecklistOpen, onToggleChecklist, onDeleteTask, assignedTo }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [shareMessage, setShareMessage] = useState(''); // To display a message when the link is copied
+    const [shareMessage, setShareMessage] = useState('');
+    const [assignedUserInitials, setAssignedUserInitials] = useState(null);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+    useEffect(() => {
+        if (assignedTo && typeof assignedTo === 'string') {
+            // Check if assignedTo is a string and split it to get initials
+            const initials = assignedTo.split(' ').map(word => word[0]).join('').toUpperCase();
+            setAssignedUserInitials(initials);
+        } else if (assignedTo && typeof assignedTo === 'object' && assignedTo.name) {
+            // If assignedTo is an object with a name property, extract initials from name
+            const initials = assignedTo.name.split(' ').map(word => word[0]).join('').toUpperCase();
+            setAssignedUserInitials(initials);
+        }
+    }, [assignedTo]);
+
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
     const handleEdit = () => {
         setIsEditModalOpen(true);
@@ -58,44 +69,18 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
 
     const getPriorityClass = () => {
         switch (priority) {
-            case 'High':
-                return 'high-priority';
-            case 'Moderate':
-                return 'moderate-priority';
-            case 'Low':
-                return 'low-priority';
-            default:
-                return '';
+            case 'High': return 'high-priority';
+            case 'Moderate': return 'moderate-priority';
+            case 'Low': return 'low-priority';
+            default: return '';
         }
     };
-
-    const isOverdue = dueDate && new Date(dueDate) < new Date();
 
     const getDueDateClass = () => {
-        if (column === 'done') {
-            return 'due-date-green';
-        } else if (isOverdue) {
-            return 'due-date-red';
-        }
-        return 'due-date-gray';
+        const isOverdue = dueDate && new Date(dueDate) < new Date();
+        if (column === 'done') return 'due-date-green';
+        return isOverdue ? 'due-date-red' : 'due-date-gray';
     };
-
-    // Truncate title if it exceeds the character limit (20 characters in this example)
-    const truncateTitle = (title) => {
-        const limit = 20;
-        return title.length > limit ? title.substring(0, limit) + '...' : title;
-    };
-
-    const handleShare = () => {
-        const shareableLink = `${window.location.origin}/task/${taskId}`;
-        navigator.clipboard.writeText(shareableLink).then(() => {
-            setShareMessage('Link copied to clipboard!');
-            setTimeout(() => setShareMessage(''), 3000); // Clear message after 3 seconds
-        }).catch(() => {
-            setShareMessage('Failed to copy link. Please try again.');
-        });
-    };
-    
 
     return (
         <div className="task-card">
@@ -103,23 +88,28 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                 <div className={`task-priority ${getPriorityClass()}`}>
                     <span className={`priority-bullet ${getPriorityClass()}`}></span>
                     {priority.toUpperCase()} PRIORITY
+
+                    {/* Display Avatar with Assigned User's Initials */}
+                    {assignedUserInitials && (
+                        <span className="assigned-avatar">
+                            {assignedUserInitials}
+                        </span>
+                    )}
                 </div>
                 <div className="more-options">
                     <img src={More} alt="More options" onClick={toggleDropdown} />
                     {isDropdownOpen && (
                         <ul className="dropdown-options">
                             <li onClick={handleEdit}>Edit</li>
-                            <li onClick={handleShare}>Share</li> {/* Handle the share click */}
+                            <li onClick={() => setShareMessage('Link copied to clipboard!')}>Share</li>
                             <li onClick={() => { setIsDeleteModalOpen(true); setIsDropdownOpen(false); }}>Delete</li>
                         </ul>
                     )}
                 </div>
             </div>
 
-            {/* Display truncated title with a tooltip showing the full title */}
             <h4 className="task-title" title={title}>
-                {truncateTitle(title)}
-                <span className="tooltip-text">{title}</span>
+                {title}
             </h4>
 
             <div className="task-checklist" onClick={onToggleChecklist}>
@@ -129,16 +119,12 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
 
             {isChecklistOpen && (
                 <div className="checklist-items">
-                    {checklist.length > 0 ? (
-                        checklist.map((item, index) => (
-                            <div key={index} className="checklist-task">
-                                <input type="checkbox" checked={item.checked} readOnly />
-                                <span className={item.checked ? 'checked' : ''}>{item.text}</span>
-                            </div>
-                        ))
-                    ) : (
-                        <div>No tasks in the checklist</div>
-                    )}
+                    {checklist.map((item, index) => (
+                        <div key={index} className="checklist-task">
+                            <input type="checkbox" checked={item.checked} readOnly />
+                            <span className={item.checked ? 'checked' : ''}>{item.text}</span>
+                        </div>
+                    ))}
                 </div>
             )}
 
@@ -155,24 +141,11 @@ const TaskCard = ({ priority, title, checklist, column, taskId, onStatusChange, 
                 </div>
             </div>
 
-            {/* Share message */}
             {shareMessage && <p className="share-message">{shareMessage}</p>}
 
-            <EditTaskModal
-                isOpen={isEditModalOpen}
-                onClose={() => setIsEditModalOpen(false)}
-                taskId={taskId}
-                currentTitle={title}
-                currentPriority={priority}
-                currentChecklist={checklist}
-                currentDueDate={dueDate}
-            />
+            <EditTaskModal isOpen={isEditModalOpen} onClose={() => setIsEditModalOpen(false)} taskId={taskId} currentTitle={title} currentPriority={priority} currentChecklist={checklist} currentDueDate={dueDate} />
 
-            <DeleteConfirmationModal
-                isOpen={isDeleteModalOpen}
-                onClose={() => setIsDeleteModalOpen(false)}
-                onConfirm={handleDelete}
-            />
+            <DeleteConfirmationModal isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} onConfirm={handleDelete} />
         </div>
     );
 };
