@@ -4,7 +4,7 @@ import AddTaskModal from '../addTaskModal/addTaskModal.jsx';
 import './Board.css';
 import Collapse from '../../assets/collapse.png';
 import Add from '../../assets/add.png';
-import Addpeople from '../../assets/Addpeople.png';
+import Addpeople from '../../assets/addpeople.png';
 import Dropdown from '../../assets/down.png';
 import TaskCard from '../taskCard/TaskCard';
 import AddPeopleModal from '../addPeopleModal/AddPeopleModal';
