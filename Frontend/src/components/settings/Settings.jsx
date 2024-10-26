@@ -119,8 +119,11 @@ const Settings = () => {
       <h2>Settings</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="setting-form-group">
-          <img src={Profile} alt="Profile Icon" className="input-icon" />
+        <div className="setting-form-group set-icon-input">
+          <div className='icon-sec'>
+          <img src={Profile} alt="Profile Icon" className="ainput-icon" />
+
+          </div>
           <input
             type="text"
             name="name"
@@ -130,8 +133,10 @@ const Settings = () => {
           />
         </div>
 
-        <div className="setting-form-group">
-          <img src={Mail} alt="Mail Icon" className="input-icon" />
+        <div className="setting-form-group set-icon-input">
+          <div className='icon-sec'>
+            <img src={Mail} alt="Mail Icon" className="ainput-icon" />
+          </div>
           <input
             type="email"
             name="email"
@@ -141,9 +146,11 @@ const Settings = () => {
           />
         </div>
 
-        <div className="setting-form-group">
+        <div className="setting-form-group set-icon-input">
           <div className="password-wrapper">
-            <img src={Lock} alt="Lock Icon" className="input-icon" />
+            <div className='icon-sec'>
+              <img src={Lock} alt="Lock Icon" className="binput-icon" />
+            </div>
             <input
               type={showOldPassword ? 'text' : 'password'}
               name="oldPassword"
@@ -160,9 +167,11 @@ const Settings = () => {
           </div>
         </div>
 
-        <div className="setting-form-group">
+        <div className="setting-form-group set-icon-input">
           <div className="password-wrapper">
-            <img src={Lock} alt="Lock Icon" className="input-icon" />
+            <div className='icon-sec'>
+              <img src={Lock} alt="Lock Icon" className="cinput-icon" />
+            </div>
             <input
               type={showNewPassword ? 'text' : 'password'}
               name="newPassword"

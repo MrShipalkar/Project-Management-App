@@ -8,7 +8,7 @@
 
 .settings-form-container h2 {
     color: #000;
-    font-family: Open Sans;
+   
     font-size: 22px;
     font-weight: 600;
     text-align: left;
@@ -18,8 +18,7 @@
 
 .setting-form-group {
     margin-bottom: 20px;
-    
-    
+ 
 }
 
 .setting-form-group input {
@@ -29,12 +28,58 @@
     /* padding: 10px; */
     border-radius: 10px;
     border: 1.38px solid #D0D0D0;
-    font-family: Open Sans;
     font-size: 15px;
     font-weight: 400;
     text-align: left;
 }
 
+.icon-sec{
+position: relative;
+}
+
+.ainput-icon{
+    position: absolute;
+    left: 10px;
+    top: 25px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+.binput-icon{
+    position: absolute;
+    left: 10px;
+    top: 0;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+.cinput-icon{
+    position: absolute;
+    left: 10px;
+    top: 0;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+.dinput-icon{
+    position: absolute;
+    left: 10px;
+    top: 25px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+
+.setting-form-group .input-icon {
+    position: absolute;
+    left: 10px;
+    top: 46%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+  }
+  
 .password-wrapper {
     display: flex;
     align-items: center;
@@ -47,7 +92,6 @@
     padding-left: 40px;
     border-radius: 10px;
     border: 1.38px solid #D0D0D0;
-    font-family: Open Sans;
     font-size: 15px;
     font-weight: 400;
     text-align: left;
@@ -69,9 +113,9 @@
     padding: 10px;
     border-radius: 55px;
     background: #17A2B8;
-    font-family: Open Sans;
     font-size: 19.29px;
     font-weight: 400;
+    color: #FFFFFF;
 }
 
 
@@ -90,7 +134,6 @@
     color: #28a745; 
     padding: 10px; 
     border-radius: 5px;
-    font-family: 'Open Sans', sans-serif;
     font-size: 14px;
     margin-bottom: 20px; 
     text-align: left; 
