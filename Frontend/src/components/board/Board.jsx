@@ -98,12 +98,24 @@ const Board = () => {
         fetchTasks();
     }, [selectedOption]);  // Run this effect when `selectedOption` changes
     
+    const formatDate = (date) => {
+        const day = date.getDate();
+        const month = date.toLocaleString('en-US', { month: 'short' });
+        const year = date.getFullYear();
+    
+        const suffix = day % 10 === 1 && day !== 11 ? 'st' :
+                       day % 10 === 2 && day !== 12 ? 'nd' :
+                       day % 10 === 3 && day !== 13 ? 'rd' : 'th';
+    
+        return `${day}${suffix} ${month}, ${year}`;
+    };
+
     return (
         <div className="board-container">
             <header className="board-header">
-                <div><h2>Welcome! {userName || 'User'} </h2></div>
-                <div><p>{new Date().toDateString()}</p></div>
-            </header>
+    <div><h2>Welcome! {userName || 'User'} </h2></div>
+    <div><p>{formatDate(new Date())}</p></div>
+</header>
 
             {error && <p className="error-message">{error}</p>}
 
