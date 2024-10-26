@@ -176,6 +176,7 @@
     cursor: pointer;
     height: 28px;
     width: auto;
+    margin-bottom: 10px;
 }
 
 .date-btn {
@@ -197,17 +198,9 @@
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
+    
 }
 
-
-.date-btn {
-    font-size: 10px;
-    background-color: transparent;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-}
 
 .due-date-red {
     background-color: #CF3636;
