@@ -18,13 +18,12 @@ const Sidebar = () => {
     localStorage.removeItem('auth-token'); 
     localStorage.removeItem('user-name');
     setIsLogoutModalOpen(false); 
-    toast.success('Logged out successfully!'); // Show logout success message
-    setTimeout(() => navigate('/'), 1500); // Delay navigation to allow toast to show
+    toast.success('Logged out successfully!');
+    setTimeout(() => navigate('/'), 1500); 
   };
 
   return (
     <div className="sidebar">
-      <ToastContainer />
       <div className="sidebar-header">
         <img src={Logo} alt="" />
         <h3>Pro Manage</h3>
@@ -75,7 +74,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Render Logout Modal */}
+    
       <LogoutConfirmationModal
         isOpen={isLogoutModalOpen}
         onClose={() => setIsLogoutModalOpen(false)}

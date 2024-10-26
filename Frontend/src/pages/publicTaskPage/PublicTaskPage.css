@@ -141,17 +141,17 @@
 }
 
 .due-date-red {
-    background-color: #f44336; /* Red for overdue */
+    background-color: #f44336; 
     color: white;
 }
 
 .due-date-green {
-    background-color: #4CAF50; /* Green for done */
+    background-color: #4CAF50; 
     color: white;
 }
 
 .due-date-gray {
-    background-color: #9E9E9E; /* Gray for active and not overdue */
+    background-color: #9E9E9E;
     color: white;
 }
 
@@ -174,28 +174,28 @@
 }
 
 
-/* Media queries for responsiveness */
 
-/* Mobile devices (max-width: 768px) */
+
+
 @media (max-width: 768px) {
     .public-task-page {
-        width: 80%; /* Full width for mobile */
+        width: 80%; 
         padding: 30px 15px;
         max-height: 100%;
         height: auto;
     }
 
     .task-title {
-        font-size: 20px; /* Smaller title */
+        font-size: 20px; 
     }
 
     .checklist-count {
-        font-size: 14px; /* Smaller checklist count */
+        font-size: 14px; 
     }
 
     .checklist li {
-        font-size: 16px; /* Smaller checklist item text */
-        min-height: 45px; /* Smaller checklist item height */
+        font-size: 16px; 
+        min-height: 45px; 
     }
 
     .public-date-btn {
@@ -215,25 +215,25 @@
     }
 }
 
-/* Smaller mobile devices (max-width: 480px) */
+
 @media (max-width: 480px) {
     .public-task-page {
-        width: 80%; /* Almost full width for smaller screens */
+        width: 80%; 
         padding: 20px;
         height: auto;
     }
 
     .task-title {
-        font-size: 18px; /* Smaller title */
+        font-size: 18px;
     }
 
     .checklist-count {
-        font-size: 12px; /* Smaller checklist count */
+        font-size: 12px; 
     }
 
     .checklist li {
-        font-size: 14px; /* Smaller checklist item text */
-        min-height: 40px; /* Smaller checklist item height */
+        font-size: 14px; 
+        min-height: 40px; 
     }
 
     .public-date-btn {

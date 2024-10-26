@@ -14,12 +14,12 @@ const AddPeopleModal = ({ isOpen, onClose }) => {
         try {
             const token = localStorage.getItem('auth-token');
     
-            // Assign tasks created by the current user to the specified user by email
+            
             await axios.patch('http://localhost:5000/api/tasks/assign', { email }, {
                 headers: { 'auth-token': token },
             });
     
-            // Show success toast
+            
             toast.success(`${email} added to board`);
             setSuccessMessage(`${email} added to board`);
         } catch (error) {
@@ -37,7 +37,7 @@ const AddPeopleModal = ({ isOpen, onClose }) => {
 
     const handleOkayClick = () => {
         resetModal();
-        onClose(); // Close the modal after resetting
+        onClose(); 
     };
 
     const handleOutsideClick = (e) => {

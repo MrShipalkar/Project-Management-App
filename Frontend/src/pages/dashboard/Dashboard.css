@@ -6,8 +6,8 @@
 
 .dashboard-content {
   flex-grow: 1;
-  overflow-x: auto; /* Allow horizontal scrolling */
-  padding-left: 270px; /* Offset for the fixed sidebar */
+  overflow-x: auto; 
+  padding-left: 270px; 
   display: flex;
   flex-direction: column;
 }

@@ -1,4 +1,4 @@
-/* Main Task Card Styling */
+
 .task-card {
     background-color: #fff;
     border-radius: 20px;
@@ -7,7 +7,7 @@
     margin-right: 10px;
 }
 
-/* Header Section */
+
 .task-header-sec {
     display: flex;
     align-items: center;
@@ -23,10 +23,10 @@
     background-color: #fff;
     color: #707070;
     margin-bottom: 5px;
-    /* Reduced gap between priority and title */
+    
 }
 
-/* Priority Bullets */
+
 .priority-bullet {
     height: 10px;
     width: 10px;
@@ -46,23 +46,22 @@
     background-color: #28a745;
 }
 
-/* Task Title */
+
 .task-title {
     margin-top: 5px;
-    /* Reduced gap between priority and title */
     color: #000000;
     font-size: 18px;
     font-weight: 500;
     text-align: left;
-    /* position: relative; */
+   
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 300px; /* Adjust this based on your layout */
+    max-width: 300px; 
     cursor: pointer;
     
 }
-/* Tooltip styling */
+
 .tooltip-text {
     visibility: hidden;
     background-color: black;
@@ -72,18 +71,18 @@
     padding: 5px;
     position: absolute;
     z-index: 10;
-    top: -25px; /* Position the tooltip above the title */
+    top: -25px; 
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.3s;
     white-space: nowrap;
-    max-width: 500px; /* Maximum width for the tooltip */
+    max-width: 500px; 
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/* Checklist Section */
+
 .task-checklist {
     font-size: 16px;
     font-weight: 500;
@@ -96,7 +95,7 @@
     color: #000000;
 }
 
-/* Dropdown Arrow */
+
 .dropdown-arrow {
     margin-left: 5px;
     transition: transform 0.3s ease;
@@ -107,7 +106,7 @@
     transform: rotate(180deg);
 }
 
-/* Checklist container */
+
 .checklist-items {
     margin-top: 10px;
     padding: 10px;
@@ -116,7 +115,7 @@
 
 }
 
-/* Each checklist task */
+
 .checklist-task {
     display: flex;
     align-items: center;
@@ -134,10 +133,10 @@
     margin-right: 10px;
     accent-color: #17A2B8;
     border-radius: 6px;
-    /* Change checkbox color */
+    
 }
 
-/* Task text */
+
 .checklist-task span {
     margin-left: 8px;
     line-height: 1.4;
@@ -147,26 +146,26 @@
     color: #000000;
 }
 
-/* Remove bottom margin for the last task */
+
 .checklist-task:last-child {
     margin-bottom: 0;
 }
 
-/* Task Date */
+
 .task-date {
     font-size: 12px;
     color: #828282;
     margin-bottom: 10px;
 }
 
-/* Task Status Section */
+
 .task-status {
     display: flex;
     justify-content: space-between;
     gap: 10px;
 }
 
-/* Task Status Buttons */
+
 .task-status-btn {
     font-size: 10px;
     color: #767575;
@@ -193,14 +192,14 @@
 
 
 
-/* Card Footer Section */
+
 .card-footer {
     margin-top: 20px;
     display: flex;
     justify-content: space-between;
 }
 
-/* Date button for overdue, done, and default (active) tasks */
+
 .date-btn {
     font-size: 10px;
     background-color: transparent;
@@ -229,6 +228,7 @@
 
 }
 .more-options {
+    display: inline-block;
 }
 
 .dropdown-options {

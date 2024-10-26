@@ -115,7 +115,6 @@ const Settings = () => {
 
   return (
     <div className="settings-form-container">
-      <ToastContainer />
       <h2>Settings</h2>
 
       <form onSubmit={handleSubmit}>

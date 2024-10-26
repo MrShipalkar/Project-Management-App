@@ -117,7 +117,6 @@ const Board = () => {
 
     return (
         <div className="board-container">
-             <ToastContainer />
             <header className="board-header">
                 <div><h2>Welcome! {userName || 'User'} </h2></div>
                 <div><p>{formatDate(new Date())}</p></div>
@@ -164,7 +163,7 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="backlog"
                             onStatusChange={handleStatusChange}
-                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            isChecklistOpen={!!expandedChecklists[task._id]} 
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask}
                             assignedTo={task.assignedTo}
@@ -195,7 +194,7 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="to-do"
                             onStatusChange={handleStatusChange}
-                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            isChecklistOpen={!!expandedChecklists[task._id]} 
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask}
                             assignedTo={task.assignedTo}
@@ -221,7 +220,7 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="progress"
                             onStatusChange={handleStatusChange}
-                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            isChecklistOpen={!!expandedChecklists[task._id]} 
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask}
                             assignedTo={task.assignedTo}
@@ -247,7 +246,7 @@ const Board = () => {
                             dueDate={task.dueDate}
                             column="done"
                             onStatusChange={handleStatusChange}
-                            isChecklistOpen={!!expandedChecklists[task._id]} // Check if this checklist is open
+                            isChecklistOpen={!!expandedChecklists[task._id]} 
                             onToggleChecklist={() => handleToggleChecklist(task._id)}
                             onDeleteTask={handleDeleteTask}
                             assignedTo={task.assignedTo}

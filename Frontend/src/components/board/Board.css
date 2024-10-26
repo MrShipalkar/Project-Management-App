@@ -4,11 +4,9 @@
   background-color: #f9f9f9;
   min-height: 100vh;
   width: auto;
-  /* Take up full viewport width */
   overflow-x: auto;
-  /* Allow horizontal scrolling */
   white-space: nowrap;
-  /* Prevent columns from wrapping */
+ 
 }
 
 .board-header {
@@ -67,10 +65,10 @@
   justify-content: space-around;
   gap: 20px;
   overflow-x: auto;
-  overflow-y: hidden; /* Prevent vertical scrolling if you don't want vertical overflow */
-  max-height: 100vh; /* Maximum height is equal to the viewport height */
+  overflow-y: hidden; 
+  max-height: 100vh; 
   height: auto;
-  box-sizing: border-box; /* Ensure padding/margins are included in the height */
+  box-sizing: border-box; 
 }
 
 .board-column {
@@ -78,16 +76,16 @@
   padding-left: 10px;
   border-radius: 8px;
   height: 70vh;
-  min-width: 28%; /* Responsive minimum width */
-  max-width: 28%; /* Limit max width per column */
-  flex: 1; /* Let columns grow and shrink to fit the space */
+  min-width: 28%; 
+  max-width: 28%; 
+  flex: 1; 
   box-sizing: border-box;
   margin-bottom: 2%;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto; 
 }
 
 .board-column::-webkit-scrollbar {
-  width: 12px; /* Adjust the width of the scrollbar */
+  width: 12px; 
 }
 
 .board-column::-webkit-scrollbar-thumb {
@@ -116,7 +114,7 @@
   border: none;
   cursor: pointer;
   outline: none;
-  /* Prevent the outline on click */
+ 
 }
 
 .add-task-btn {
@@ -124,7 +122,7 @@
   border: none;
   cursor: pointer;
   outline: none;
-  /* Prevent the outline on click */
+  
 }
 
 .icon-btn {
@@ -132,7 +130,7 @@
   border: none;
   cursor: pointer;
   outline: none;
-  /* Prevent the outline on click */
+ 
 }
 
 .add-task-btn {
@@ -140,17 +138,17 @@
   border: none;
   cursor: pointer;
   outline: none;
-  /* Prevent the outline on click */
+  
   position: relative;
-  /* Set relative positioning */
+  
   top: -5px;
-  /* Move the button up by 10px, adjust the value as needed */
+
 }
 
 .icon-btn:focus,
 .add-task-btn:focus {
   outline: none;
-  /* Ensure no outline is shown when the button is focused */
+ 
 }
 
 

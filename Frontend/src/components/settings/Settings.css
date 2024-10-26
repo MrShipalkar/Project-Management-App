@@ -1,4 +1,4 @@
-/* Form Container */
+
 .settings-form-container {
     padding-left: 40px;
     height: 100vh;
@@ -14,10 +14,10 @@
     margin-bottom: 60px;
 }
 
-/* Form Group Styling */
+
 .form-group {
     margin-bottom: 20px;
-    /* Adds 10px gap between form groups */
+    
 }
 
 .form-group label {
@@ -63,7 +63,7 @@
     color: #888;
 }
 
-/* Update Button */
+
 .update-btn {
     margin-top: 20px;
     margin-left: 5px;
@@ -77,26 +77,26 @@
     font-weight: 400;
 }
 
-/* Error Message Styling */
+
 .error-message {
-    color: #e74c3c; /* Red color to indicate error */
-    padding: 10px; /* Padding around the message */
+    color: #e74c3c; 
+    padding: 10px; 
     font-size: 10px;
-    margin-bottom: 20px; /* Space between the error message and other elements */
-    text-align: left; /* Left-align the text */
+    margin-bottom: 20px; 
+    text-align: left; 
     position:absolute;
     top: 406px;
   }
   
-  /* Success Message Styling */
+ 
   .success-message {
-    color: #28a745; /* Green color to indicate success */
-    padding: 10px; /* Padding around the message */
-    border-radius: 5px; /* Slight rounding of the corners */
+    color: #28a745; 
+    padding: 10px; 
+    border-radius: 5px;
     font-family: 'Open Sans', sans-serif;
     font-size: 14px;
-    margin-bottom: 20px; /* Space between the success message and other elements */
-    text-align: left; /* Left-align the text */
+    margin-bottom: 20px; 
+    text-align: left; 
     position:absolute;
     top: 406px;
   }

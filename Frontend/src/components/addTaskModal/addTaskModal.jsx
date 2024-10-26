@@ -37,16 +37,16 @@ const AddTaskModal = ({ isOpen, onClose }) => {
     const formatDueDate = (date) => {
         const formattedDate = new Date(date);
         if (!isNaN(formattedDate)) {
-            return formattedDate.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+            return formattedDate.toISOString().split('T')[0]; 
         }
-        return ''; // Return empty string if invalid date
+        return ''; 
     };
 
     const handleSave = async () => {
         if (!title || !priority || !checklist) {
             const errorMsg = 'Please fill in all required fields.';
             setError(errorMsg);
-            toast.error(errorMsg); // Show error toast
+            toast.error(errorMsg); 
             return;
         }
 
@@ -54,7 +54,7 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             title,
             priority,
             checklist,
-            dueDate: formatDueDate(dueDate), // Ensure consistent date format
+            dueDate: formatDueDate(dueDate),
         };
 
         try {
@@ -67,15 +67,15 @@ const AddTaskModal = ({ isOpen, onClose }) => {
             });
             
             toast.success('Task added successfully!');
-            // Delay the reload to allow the toast to display
+            
             setTimeout(() => {
                 onClose(); 
                 window.location.reload();
-            }, 3000); // Adjust delay time as needed
+            }, 3000); 
         } catch (err) {
             const errorMsg = 'Failed to add the task. Please try again.';
             setError(errorMsg);
-            toast.error(errorMsg); // Show error toast
+            toast.error(errorMsg); 
             console.error(err);
         }
     };
@@ -92,8 +92,6 @@ const AddTaskModal = ({ isOpen, onClose }) => {
 
     return (
         <div className="modal-overlay">
-            {/* Ensure ToastContainer is rendered in your App.js or here */}
-            <ToastContainer />
             <div className="modal-content">
                 <label className="input-label">Title</label>
                 <input

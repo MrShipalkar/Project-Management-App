@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './Analytics.css'; // Import the CSS file for styling
+import './Analytics.css'; 
 
 const Analytics = () => {
   const [taskData, setTaskData] = useState({
@@ -18,7 +18,7 @@ const Analytics = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const token = localStorage.getItem('auth-token'); // Assuming token is stored in localStorage
+        const token = localStorage.getItem('auth-token'); 
         const res = await axios.get('http://localhost:5000/api/tasks/filter', {
           headers: {
             'auth-token': token,
@@ -26,7 +26,7 @@ const Analytics = () => {
         });
         const tasks = res.data;
 
-        // Count tasks based on their status and priority
+        
         const counts = {
           backlog: tasks.filter((task) => task.status === 'backlog').length,
           toDo: tasks.filter((task) => task.status === 'to-do').length,
@@ -35,10 +35,10 @@ const Analytics = () => {
           lowPriority: tasks.filter((task) => task.priority === 'Low').length,
           moderatePriority: tasks.filter((task) => task.priority === 'Moderate').length,
           highPriority: tasks.filter((task) => task.priority === 'High').length,
-          dueDate: tasks.filter((task) => task.dueDate).length, // Count tasks that have a dueDate
+          dueDate: tasks.filter((task) => task.dueDate).length,
         };
 
-        // Update state with calculated counts
+        
         setTaskData(counts);
       } catch (err) {
         console.error('Error fetching tasks:', err);
@@ -47,7 +47,7 @@ const Analytics = () => {
     };
 
     fetchTasks();
-  }, []); // Run once when the component mounts
+  }, []); 
 
   return (
     <div className="analytics-container">

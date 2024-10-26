@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './PublicTaskPage.css';
-import Logo from '../../assets/logo.png';  // Add the correct path to your logo image
+import Logo from '../../assets/logo.png'; 
 
 const PublicTaskPage = () => {
     const { taskId } = useParams();
@@ -22,7 +22,7 @@ const PublicTaskPage = () => {
         fetchTask();
     }, [taskId]);
 
-    // Format the due date
+    
     const formatDueDate = (dateStr) => {
         if (!dateStr) return '';
         const date = new Date(dateStr);
@@ -34,26 +34,26 @@ const PublicTaskPage = () => {
         return `${date.toLocaleDateString('en-US', options)}${suffix}`;
     };
 
-    // Determine the due date button class based on the status and due date
+   
     const getDueDateClass = (status, dueDate) => {
         const now = new Date();
         const due = new Date(dueDate);
 
-        // If task is done, return green class
+        
         if (status === 'done') {
             return 'due-date-green';
         }
         
-        // If the task is not done and past the due date, return red class
+        
         if (due < now) {
             return 'due-date-red';
         }
 
-        // If the task is not done and the due date is upcoming, return gray class
+        
         return 'due-date-gray';
     };
 
-    // Get priority class (high, moderate, low)
+    
     const getPriorityClass = (priority) => {
         switch (priority) {
             case 'High':
@@ -77,7 +77,7 @@ const PublicTaskPage = () => {
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 {task ? (
                     <div className="task-details">
-                        {/* Priority section */}
+                      
                         <div className={`task-priority ${getPriorityClass(task.priority)}`}>
                             <span className={`priority-bullet ${getPriorityClass(task.priority)}`}></span>
                             {task.priority.toUpperCase()} PRIORITY
@@ -85,7 +85,7 @@ const PublicTaskPage = () => {
 
                         <h2 className="task-title">{task.title}</h2>
 
-                        {/* Checklist Count */}
+                        
                         <div className="checklist-count">
                             Checklist ({task.checklist.filter(item => item.checked).length}/{task.checklist.length})
                         </div>

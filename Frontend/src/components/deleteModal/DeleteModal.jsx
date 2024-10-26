@@ -1,5 +1,5 @@
 import React from 'react';
-import './DeleteModal.css'; // Add CSS for the modal
+import './DeleteModal.css';
 
 const DeleteConfirmationModal = ({ isOpen, onClose, onConfirm }) => {
     if (!isOpen) return null;

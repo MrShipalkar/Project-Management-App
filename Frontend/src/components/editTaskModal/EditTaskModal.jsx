@@ -123,7 +123,7 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
             setTimeout(() => {
                 onClose(); 
                 window.location.reload();
-            }, 3000); // Adjust delay time as needed
+            }, 3000); 
         } catch (err) {
             setError('Failed to update the task. Please try again.');
             toast.error(err)
@@ -141,7 +141,6 @@ const EditTaskModal = ({ isOpen, onClose, taskId }) => {
 
     return (
         <div className="edit-modal-overlay">
-            <ToastContainer />
             <div className="edit-modal-content">
                 <label className="edit-input-label">Title</label>
                 <input

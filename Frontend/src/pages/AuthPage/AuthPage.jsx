@@ -49,7 +49,7 @@ const AuthPage = () => {
 
         toast.success('Login successful!');
 
-        setTimeout(() => navigate('/dashboard/board'), 1500); // Navigate after a slight delay
+        setTimeout(() => navigate('/dashboard/board'), 1500); 
       } else {
         await axios.post('http://localhost:5000/api/users/register', {
           name,
@@ -74,7 +74,6 @@ const AuthPage = () => {
 
   return (
     <div className="auth-container">
-      <ToastContainer />
       <div className="auth-left">
         <div className="auth-welcome">
           <img src={Form} alt="Form Illustration" />
@@ -150,7 +149,7 @@ const AuthPage = () => {
             {isLogin ? 'Log in' : 'Register'}
           </button>
 
-          {/* General Error Message */}
+         
           <p className={`general-error ${error.general ? 'visible' : ''}`}>{error.general || ''}</p>
 
           <p className="toggle-link">
